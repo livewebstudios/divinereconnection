@@ -1,0 +1,526 @@
+---
+// Four doors in. Each visitor (faith, healing, seeker, event host) should
+// recognise their own door in a second, so each card shows a small live
+// scene of what that door actually is, the way the reference template puts
+// working product UI inside its feature cards. Prices sit on the two cards
+// that have confirmed prices, because price is the question people ask next.
+// Every card is one whole link.
+import { rel } from '../../lib/url';
+const u = Astro.url;
+---
+
+<section class="section doors" aria-labelledby="doors-title">
+  <div class="wrap">
+    <div class="section-head" data-reveal-group>
+      <p class="eyebrow" data-reveal>Where would you like to begin?</p>
+      <h2 id="doors-title" data-reveal>Four ways in. One reconnection.</h2>
+      <p class="lede" data-reveal>
+        Some people come for prayer, some for healing, some with a question they have carried for years. Start wherever feels right.
+      </p>
+    </div>
+
+    <div class="grid" data-reveal-group>
+      <!-- Prayer -->
+      <a class="door door-prayer" href={rel('services/prayer/', u)} data-reveal data-inview>
+        <div class="scene" aria-hidden="true">
+          <div class="stack">
+            <div class="mini paper m1"><span class="ml">Prayer request</span><span class="mh">Peace for our family this winter</span></div>
+            <div class="mini paper m2"><span class="ml">Prayer request</span><span class="mh">For my dad, starting over at 60</span></div>
+            <div class="mini paper m3"><span class="ml">Prayer request</span><span class="mh">For my grandmother, Rose</span></div>
+          </div>
+        </div>
+        <div class="body">
+          <p class="kicker">Prayer</p>
+          <h3>Someone to pray with you.</h3>
+          <p>Send a request for yourself or someone you love, and Stella prays for them personally. You can also pray together by phone.</p>
+          <span class="go">Send a prayer request <span aria-hidden="true">→</span></span>
+        </div>
+      </a>
+
+      <!-- Healing -->
+      <a class="door door-healing" href={rel('services/pranic-healing/', u)} data-reveal data-inview>
+        <div class="scene" aria-hidden="true">
+          <div class="dist">
+            <span class="place p-a">In Montclair</span>
+            <svg class="wave" viewBox="0 0 320 90" preserveAspectRatio="none">
+              <path id="healpath" d="M8 64C60 64 70 20 120 22s70 46 110 44 64-36 82-40" fill="none" stroke="url(#hg)" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="4 7"></path>
+              <defs>
+                <linearGradient id="hg" x1="0" x2="1">
+                  <stop offset="0" stop-color="#AD93C4"></stop>
+                  <stop offset="1" stop-color="#4B2E83"></stop>
+                </linearGradient>
+              </defs>
+            </svg>
+            <span class="pulse"></span>
+            <span class="place p-b">Wherever you are</span>
+          </div>
+          <span class="chip notouch">No touch</span>
+        </div>
+        <div class="body">
+          <p class="kicker">Pranic Healing</p>
+          <h3>Healing, near or far.</h3>
+          <p>A no-touch energy practice. It works in person or at a distance, and a distance session does not need you there in real time.</p>
+          <div class="foot">
+            <span class="price"><strong>$65</strong> a session · sliding scale</span>
+            <span class="go">See how it works <span aria-hidden="true">→</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Guidance -->
+      <a class="door door-guidance" href={rel('services/spiritual-guidance/', u)} data-reveal data-inview>
+        <div class="scene" aria-hidden="true">
+          <div class="chat">
+            <p class="b b-them">I keep going back and forth on this move.</p>
+            <p class="b b-her">Let’s talk it through together. What does your gut keep telling you?</p>
+            <p class="b b-them b-typing"><span></span><span></span><span></span></p>
+          </div>
+        </div>
+        <div class="body">
+          <p class="kicker">Guidance and readings</p>
+          <h3>Honest guidance at a crossroads.</h3>
+          <p>A conversation, not a performance. For decisions, relationships, or missing someone who has passed.</p>
+          <div class="foot">
+            <span class="price"><strong>$90</strong> a session</span>
+            <span class="go">Explore guidance <span aria-hidden="true">→</span></span>
+          </div>
+        </div>
+      </a>
+
+      <!-- Events -->
+      <a class="door door-events" href={rel('events/', u)} data-reveal data-inview>
+        <div class="scene" aria-hidden="true">
+          <div class="tickets">
+            <div class="ticket t-past">
+              <span class="t-k">Guest speaker</span>
+              <span class="t-t">Holistic WellCare Advisers MeetUp</span>
+              <span class="t-d">March 19, 2026</span>
+            </div>
+            <div class="ticket t-next">
+              <span class="t-k">Your gathering</span>
+              <span class="t-t">Readings for your group, party or podcast</span>
+              <span class="t-d">Date of your choosing</span>
+            </div>
+          </div>
+        </div>
+        <div class="body">
+          <p class="kicker">Events</p>
+          <h3>Bring Stella to your gathering.</h3>
+          <p>Parties, groups, meetups and podcasts. Send the date and a few details, and Stella will reply with what fits.</p>
+          <span class="go">Plan an event <span aria-hidden="true">→</span></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1.25rem;
+  }
+  @media (min-width: 760px) {
+    .grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1080px) {
+    .grid {
+      grid-template-columns: repeat(12, 1fr);
+    }
+    .door-prayer {
+      grid-column: span 7;
+    }
+    .door-healing {
+      grid-column: span 5;
+    }
+    .door-guidance {
+      grid-column: span 5;
+    }
+    .door-events {
+      grid-column: span 7;
+    }
+  }
+
+  .door {
+    display: flex;
+    flex-direction: column;
+    border-radius: 28px;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    text-decoration: none;
+    color: var(--color-ink);
+    overflow: hidden;
+    transition:
+      transform 0.5s var(--ease-out),
+      box-shadow 0.5s var(--ease-out),
+      border-color 0.3s;
+  }
+  .door:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-lavender-soft);
+    color: var(--color-ink);
+  }
+  .door:focus-visible {
+    outline-offset: 4px;
+    border-radius: 28px;
+  }
+
+  .scene {
+    position: relative;
+    height: 250px;
+    margin: 0.6rem 0.6rem 0;
+    border-radius: 22px;
+    overflow: hidden;
+    background:
+      radial-gradient(80% 90% at 20% 0%, #fff 0%, transparent 60%),
+      linear-gradient(160deg, var(--color-lavender-mist), #f4f0f8 60%, #e3d9ee);
+    display: grid;
+    place-items: center;
+  }
+  .body {
+    padding: 1.6rem 1.75rem 1.75rem;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+  .kicker {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-purple);
+    margin-bottom: 0.5rem;
+  }
+  .body h3 {
+    margin-bottom: 0.75rem;
+  }
+  .body p:not(.kicker) {
+    color: var(--color-gray-600);
+    margin-bottom: 1.25rem;
+    max-width: 46ch;
+  }
+  .foot {
+    margin-top: auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+  .price {
+    font-size: 0.9375rem;
+    color: var(--color-gray-600);
+  }
+  .price strong {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    color: var(--color-purple-deep);
+    margin-right: 0.2rem;
+  }
+  .go {
+    margin-top: auto;
+    align-self: flex-start;
+    font-weight: 700;
+    color: var(--color-purple-deep);
+    border-bottom: 1px solid var(--color-lavender);
+    padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+  .foot .go {
+    margin-top: 0;
+    align-self: center;
+  }
+  .go span {
+    display: inline-block;
+    transition: transform 0.35s var(--ease-out);
+  }
+  .door:hover .go span {
+    transform: translateX(4px);
+  }
+
+  /* Prayer: three notes stacked, they fan out when the card arrives or on hover */
+  .stack {
+    position: relative;
+    width: 210px;
+    height: 160px;
+    --spread: 78%;
+  }
+  @media (max-width: 1240px) {
+    .stack {
+      --spread: 52%;
+    }
+  }
+  @media (max-width: 480px) {
+    .stack {
+      --spread: 36%;
+    }
+  }
+  .mini {
+    position: absolute;
+    inset: 0;
+    padding: 1.1rem 1.2rem;
+    display: grid;
+    align-content: start;
+    gap: 0.35rem;
+    background-image: repeating-linear-gradient(to bottom, transparent 0 25px, rgba(173, 147, 196, 0.3) 25px 26px);
+    background-position: 0 2.4rem;
+    transition: transform 0.9s var(--ease-out);
+  }
+  .ml {
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-gray-600);
+  }
+  .mh {
+    font-family: var(--font-hand);
+    font-size: 1.3rem;
+    line-height: 1.2;
+    color: var(--color-purple-ink);
+  }
+  .m1 {
+    transform: rotate(-2deg);
+  }
+  .m2 {
+    transform: rotate(1deg);
+  }
+  .m3 {
+    transform: rotate(3deg);
+  }
+  :global(.is-in) .m1,
+  .door:hover .m1 {
+    transform: translate(calc(-1 * var(--spread)), 8px) rotate(-9deg);
+  }
+  :global(.is-in) .m2 {
+    transform: translate(0, -6px) rotate(-1deg);
+  }
+  :global(.is-in) .m3,
+  .door:hover .m3 {
+    transform: translate(var(--spread), 12px) rotate(8deg);
+  }
+  .door:hover .m2 {
+    transform: translate(0, -14px) rotate(0deg);
+  }
+
+  /* Healing: two places joined by the signature's own swash line */
+  .dist {
+    position: relative;
+    width: min(88%, 380px);
+    height: 150px;
+  }
+  .wave {
+    position: absolute;
+    inset: 22px 0 auto;
+    width: 100%;
+    height: 90px;
+  }
+  .wave path {
+    animation: flow 2.4s linear infinite;
+  }
+  @keyframes flow {
+    to {
+      stroke-dashoffset: -44;
+    }
+  }
+  .pulse {
+    position: absolute;
+    top: 22px;
+    left: 0;
+    width: 14px;
+    height: 14px;
+    margin: -7px 0 0 -7px;
+    border-radius: 50%;
+    background: var(--color-purple-deep);
+    box-shadow: 0 0 0 6px rgba(107, 79, 160, 0.18), 0 0 24px 6px rgba(173, 147, 196, 0.9);
+    offset-path: path('M8 64C60 64 70 20 120 22s70 46 110 44 64-36 82-40');
+    animation: travel 4.5s var(--ease-out) infinite;
+  }
+  @keyframes travel {
+    from {
+      offset-distance: 0%;
+    }
+    to {
+      offset-distance: 100%;
+    }
+  }
+  .place {
+    position: absolute;
+    padding: 0.45rem 0.85rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-white);
+    box-shadow: var(--shadow-soft);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    color: var(--color-purple-deep);
+    white-space: nowrap;
+  }
+  .p-a {
+    left: -6px;
+    bottom: 0;
+  }
+  .p-b {
+    right: -6px;
+    top: 0;
+  }
+  .notouch {
+    position: absolute;
+    left: 1rem;
+    top: 1rem;
+    background: var(--color-white);
+  }
+
+  /* Guidance: a conversation that types itself out */
+  .chat {
+    width: min(88%, 400px);
+    display: grid;
+    gap: 0.7rem;
+  }
+  .b {
+    margin: 0;
+    padding: 0.75rem 1rem;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+    max-width: 85%;
+    box-shadow: var(--shadow-soft);
+    transition:
+      opacity 0.5s var(--ease-out),
+      transform 0.6s var(--ease-out);
+  }
+  .b-them {
+    justify-self: start;
+    background: var(--color-white);
+    color: var(--color-ink);
+    border-radius: 16px 16px 16px 4px;
+  }
+  .b-her {
+    justify-self: end;
+    background: var(--color-purple-deep);
+    color: var(--color-white);
+    border-radius: 16px 16px 4px 16px;
+  }
+  :global(.motion-ok) .b {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  :global(.motion-ok .is-in) .b {
+    opacity: 1;
+    transform: none;
+  }
+  :global(.is-in) .b:nth-child(2) {
+    transition-delay: 0.7s;
+  }
+  :global(.is-in) .b:nth-child(3) {
+    transition-delay: 1.5s;
+  }
+  .b-typing {
+    display: flex;
+    gap: 4px;
+    padding: 0.85rem 0.95rem;
+  }
+  .b-typing span {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-lavender);
+    animation: dot 1.2s ease-in-out infinite;
+  }
+  .b-typing span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .b-typing span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  @keyframes dot {
+    0%, 100% { transform: translateY(0); opacity: 0.5; }
+    50% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* Events: last talk, and the open ticket for yours */
+  .tickets {
+    position: relative;
+    width: min(90%, 520px);
+    height: 200px;
+  }
+  .ticket {
+    position: absolute;
+    width: min(66%, 300px);
+    padding: 1rem 1.2rem;
+    border-radius: 16px;
+    display: grid;
+    gap: 0.2rem;
+    transition: transform 0.8s var(--ease-out);
+  }
+  .ticket::before,
+  .ticket::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    margin-top: -9px;
+    border-radius: 50%;
+    background: #ece5f3;
+  }
+  .ticket::before {
+    left: -9px;
+  }
+  .ticket::after {
+    right: -9px;
+  }
+  .t-past {
+    left: 0;
+    top: 0;
+    background: var(--color-white);
+    box-shadow: var(--shadow-soft);
+    transform: rotate(-4deg);
+  }
+  .t-next {
+    right: 0;
+    bottom: 0;
+    background: var(--color-purple-deep);
+    color: var(--color-white);
+    box-shadow: var(--shadow-lift);
+    transform: rotate(3deg) translateY(10px);
+  }
+  :global(.is-in) .t-next {
+    transform: rotate(3deg);
+  }
+  .door:hover .t-next {
+    transform: rotate(0deg) translateY(-8px);
+  }
+  .door:hover .t-past {
+    transform: rotate(-7deg) translateX(-8px);
+  }
+  .t-k {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-purple);
+  }
+  .t-next .t-k {
+    color: var(--color-lavender-soft);
+  }
+  .t-t {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.25rem;
+    line-height: 1.15;
+  }
+  .t-d {
+    font-size: 0.8125rem;
+    color: var(--color-gray-600);
+  }
+  .t-next .t-d {
+    color: #e3d9ef;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pulse {
+      display: none;
+    }
+  }
+</style>

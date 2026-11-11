@@ -1,0 +1,375 @@
+---
+// Events. Three jobs: what is coming up (and how to hear first), where she
+// has already spoken, and how to book her. Podcasts load only on click, so
+// YouTube sets nothing until a visitor chooses to watch.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import RequestForm from '../components/islands/RequestForm';
+import { events, podcasts } from '../data/events';
+import { SITE, FORMS } from '../config';
+
+const today = new Date().toISOString().slice(0, 10);
+const upcoming = events.filter((e) => e.date >= today).sort((a, b) => a.date.localeCompare(b.date));
+const past = events.filter((e) => e.date < today).sort((a, b) => b.date.localeCompare(a.date));
+const fmt = (d: string) =>
+  new Date(d + 'T12:00:00').toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+
+const schema = upcoming.map((e) => ({
+  '@context': 'https://schema.org',
+  '@type': 'Event',
+  name: e.title,
+  startDate: e.date,
+  location: { '@type': 'Place', name: e.place || 'To be announced' },
+  performer: { '@type': 'Person', name: SITE.owner },
+}));
+---
+
+<Base
+  title="Events and Podcast Interviews: Stella Crispo"
+  description="Upcoming events, podcast interviews and how to bring Stella Crispo to your gathering."
+  schema={schema}
+>
+  <PageHero
+    eyebrow="Events"
+    title="Gatherings, talks and conversations."
+    intro="Stella reads at private and public events, speaks to groups and joins podcasts. Here is where to find her, and how to bring her to yours."
+  >
+    <Fragment slot="actions">
+      <a class="btn" href="#inquiry">Plan an event <span class="arrow" aria-hidden="true">→</span></a>
+    </Fragment>
+    <Fragment slot="aside">
+      <div class="ticket">
+        <span class="t-k">Your gathering</span>
+        <span class="t-t">Readings for your group, party or podcast</span>
+        <span class="t-d">Date of your choosing</span>
+      </div>
+    </Fragment>
+  </PageHero>
+
+  <section class="section cal" aria-labelledby="cal-title">
+    <div class="wrap cal-grid">
+      <div data-reveal-group>
+        <h2 id="cal-title" data-reveal>Coming up</h2>
+        {
+          upcoming.length ? (
+            <ul class="list" data-reveal>
+              {upcoming.map((e) => (
+                <li class="ev">
+                  <time datetime={e.date}>{fmt(e.date)}</time>
+                  <p class="ev-t">{e.title}</p>
+                  <p class="ev-r">{e.role}{e.place ? ` · ${e.place}` : ''}</p>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div class="empty" data-reveal>
+              <p class="empty-t">Nothing on the calendar right now.</p>
+              <p>Join the list and you’ll hear first.</p>
+              <form class="news" action={FORMS.newsletter} method="post" target="_blank" rel="noopener">
+                <label class="sr-only" for="ev-email">Email address</label>
+                <input id="ev-email" type="email" name="EMAIL" autocomplete="email" placeholder="Your email" required />
+                <button class="btn btn--sm" type="submit">Join the list</button>
+                <div class="hp" aria-hidden="true"><input type="text" name="b_honeypot" tabindex="-1" value="" /></div>
+              </form>
+            </div>
+          )
+        }
+      </div>
+      <div data-reveal-group>
+        <h2 data-reveal>Where Stella has been</h2>
+        <ul class="list" data-reveal>
+          {
+            past.map((e) => (
+              <li class="ev ev-past">
+                <time datetime={e.date}>{fmt(e.date)}</time>
+                <p class="ev-t">{e.title}</p>
+                <p class="ev-r">{e.role}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="section pods" aria-labelledby="pods-title">
+    <div class="wrap">
+      <div class="section-head" data-reveal-group>
+        <p class="eyebrow" data-reveal>Listen</p>
+        <h2 id="pods-title" data-reveal>Podcast interviews</h2>
+        <p class="lede" data-reveal>Hear Stella talk about her path and her work in her own voice.</p>
+      </div>
+      <div class="pod-grid" data-reveal-group>
+        {
+          podcasts.map((p) => (
+            <figure class="pod" data-reveal>
+              <div class="yt" data-yt={p.id}>
+                <img src={`https://i.ytimg.com/vi/${p.id}/hqdefault.jpg`} alt="" width="480" height="360" loading="lazy" />
+                <button type="button" class="yt-play" data-yt-play>
+                  <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden="true"><path d="M7 4.5v13l11-6.5z" fill="currentColor" /></svg>
+                  <span>Play<span class="sr-only"> {p.show}, {p.detail}</span></span>
+                </button>
+              </div>
+              <figcaption>
+                <span class="pod-show">{p.show}</span>
+                <span class="pod-d">{p.detail}</span>
+              </figcaption>
+            </figure>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section inquiry" id="inquiry" aria-labelledby="inq-title">
+    <div class="wrap inq-grid">
+      <div data-reveal-group>
+        <h2 id="inq-title" data-reveal>Bring Stella to your event</h2>
+        <p class="lede" data-reveal>Send the date and a few details. Stella replies personally with what fits your gathering.</p>
+        <ul class="kinds" data-reveal>
+          <li><strong>Private parties</strong><span>Short readings for each of your guests</span></li>
+          <li><strong>Groups and meetups</strong><span>A talk, a group reading or both</span></li>
+          <li><strong>Podcasts</strong><span>A guest conversation about faith, healing and intuition</span></li>
+        </ul>
+      </div>
+      <div data-reveal>
+        <RequestForm client:visible kind="event" action={FORMS.event} phone={SITE.phone} phoneHref={SITE.phoneHref} email={SITE.email} />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  // Click-to-load YouTube: nothing from YouTube runs until someone presses play.
+  document.querySelectorAll<HTMLElement>('[data-yt]').forEach((box) => {
+    box.querySelector('[data-yt-play]')?.addEventListener('click', () => {
+      const id = box.dataset.yt;
+      const f = document.createElement('iframe');
+      f.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`;
+      f.title = box.querySelector('span')?.textContent || 'Podcast interview';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture';
+      f.allowFullscreen = true;
+      box.replaceChildren(f);
+      f.focus();
+    });
+  });
+</script>
+
+<style>
+  .ticket {
+    position: relative;
+    display: grid;
+    gap: 0.3rem;
+    width: 320px;
+    padding: 1.5rem 1.6rem;
+    border-radius: 20px;
+    background: var(--color-purple-deep);
+    color: var(--color-white);
+    box-shadow: var(--shadow-lift);
+    rotate: 4deg;
+  }
+  .t-k {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-lavender-soft);
+  }
+  .t-t {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.6rem;
+    line-height: 1.1;
+  }
+  .t-d {
+    font-size: 0.875rem;
+    color: #e3d9ef;
+  }
+
+  .cal-grid,
+  .inq-grid {
+    display: grid;
+    gap: 3rem;
+  }
+  @media (min-width: 900px) {
+    .cal-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .inq-grid {
+      grid-template-columns: 0.8fr 1.2fr;
+      align-items: start;
+    }
+  }
+  .cal h2,
+  .inquiry h2 {
+    margin-bottom: 1.5rem;
+  }
+  .list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .ev {
+    padding: 1.5rem 1.75rem;
+    border-radius: 22px;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+  }
+  .ev time {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-purple);
+  }
+  .ev-t {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.15;
+    color: var(--color-purple-deep);
+    margin: 0.35rem 0 0.2rem;
+  }
+  .ev-r {
+    margin: 0;
+    color: var(--color-gray-600);
+  }
+  .empty {
+    padding: 2rem;
+    border-radius: 24px;
+    background: var(--color-lavender-mist);
+  }
+  .empty-t {
+    font-family: var(--font-display);
+    font-size: var(--step-2);
+    line-height: 1.15;
+    color: var(--color-purple-deep);
+    margin-bottom: 0.4rem;
+  }
+  .news {
+    position: relative;
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+    padding: 0.35rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    max-width: 440px;
+  }
+  .news input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: none;
+    padding: 0 0.9rem;
+    font: inherit;
+    color: var(--color-ink);
+  }
+  .news input:focus {
+    outline: none;
+  }
+  .news:focus-within {
+    outline: 3px solid var(--color-purple);
+    outline-offset: 2px;
+  }
+  .hp {
+    position: absolute;
+    left: -5000px;
+  }
+
+  .pods {
+    background: linear-gradient(180deg, var(--color-gray-50), var(--color-lavender-mist) 50%, var(--color-gray-50));
+  }
+  .pod-grid {
+    display: grid;
+    gap: 2rem;
+  }
+  @media (min-width: 820px) {
+    .pod-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  .pod {
+    margin: 0;
+  }
+  .yt {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--color-purple-ink);
+    box-shadow: var(--shadow-lift);
+  }
+  .yt img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.85;
+  }
+  .yt :global(iframe) {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+  .yt-play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    min-height: 52px;
+    padding: 0.8rem 1.4rem;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--color-white);
+    color: var(--color-purple-deep);
+    font: 700 0.9375rem/1 var(--font-body);
+    box-shadow: var(--shadow-lift);
+    cursor: pointer;
+    transition: transform 0.35s var(--ease-out);
+  }
+  .yt-play:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+  }
+  .pod figcaption {
+    display: grid;
+    margin-top: 1rem;
+  }
+  .pod-show {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 1.5rem;
+    color: var(--color-purple-deep);
+  }
+  .pod-d {
+    color: var(--color-gray-600);
+  }
+
+  .kinds {
+    list-style: none;
+    margin: 2rem 0 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .kinds li {
+    display: grid;
+    gap: 0.15rem;
+    padding: 1.1rem 1.3rem;
+    border-radius: 18px;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+  }
+  .kinds strong {
+    color: var(--color-purple-deep);
+  }
+  .kinds span {
+    color: var(--color-gray-600);
+    font-size: 0.9375rem;
+  }
+</style>

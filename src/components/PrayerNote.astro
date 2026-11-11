@@ -1,0 +1,84 @@
+---
+// A handwritten prayer request on paper, held by a clip. The single object
+// that says "prayer" without stock imagery: it is what a request looks like.
+interface Props {
+  label?: string;
+  note: string;
+  sign?: string;
+  status?: string;
+  class?: string;
+  [key: string]: unknown;
+}
+const { label = 'Prayer request', note, sign, status, class: cls = '', ...rest } = Astro.props;
+---
+
+<figure class={`note paper ${cls}`} {...rest}>
+  <svg class="clip" width="26" height="58" viewBox="0 0 26 58" aria-hidden="true">
+    <path d="M8 46V12a5 5 0 0 1 10 0v34a8 8 0 0 1-16 0V16" fill="none" stroke="#8E8A99" stroke-width="2.4" stroke-linecap="round"></path>
+  </svg>
+  <figcaption class="note-label">{label}</figcaption>
+  <p class="note-text">{note}</p>
+  {sign && <p class="note-sign">{sign}</p>}
+  {
+    status && (
+      <p class="note-status">
+        <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+          <circle cx="8" cy="8" r="8" fill="#4B2E83" />
+          <path d="m4.5 8.2 2.3 2.3 4.7-4.9" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" />
+        </svg>
+        {status}
+      </p>
+    )
+  }
+</figure>
+
+<style>
+  .note {
+    margin: 0;
+    width: 250px;
+    padding: 1.4rem 1.3rem 1.1rem;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 0 27px,
+      rgba(173, 147, 196, 0.28) 27px 28px
+    );
+    background-position: 0 3.1rem;
+  }
+  .clip {
+    position: absolute;
+    top: -26px;
+    left: 26px;
+  }
+  .note-label {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-gray-600);
+    margin-bottom: 0.4rem;
+  }
+  .note-text {
+    font-family: var(--font-hand);
+    font-size: 1.5rem;
+    line-height: 28px;
+    color: var(--color-purple-ink);
+    margin: 0;
+  }
+  .note-sign {
+    font-family: var(--font-hand);
+    font-size: 1.25rem;
+    line-height: 28px;
+    color: var(--color-gray-600);
+    margin: 0;
+    text-align: right;
+  }
+  .note-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.6rem 0 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-purple-deep);
+  }
+</style>

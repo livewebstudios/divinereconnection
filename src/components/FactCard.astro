@@ -1,0 +1,69 @@
+---
+// The practical answers in one glance (price, where, how to start), placed
+// in the page hero because they are the first questions people have.
+interface Props {
+  title: string;
+  rows: { k: string; v: string }[];
+  note?: string;
+}
+const { title, rows, note } = Astro.props;
+---
+
+<div class="fact">
+  <p class="fact-t">{title}</p>
+  <dl>
+    {
+      rows.map((r) => (
+        <div class="row">
+          <dt>{r.k}</dt>
+          <dd>{r.v}</dd>
+        </div>
+      ))
+    }
+  </dl>
+  {note && <p class="fact-n">{note}</p>}
+</div>
+
+<style>
+  .fact {
+    width: 320px;
+    padding: 1.4rem 1.5rem;
+    border-radius: 22px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--shadow-lift);
+    rotate: 3deg;
+  }
+  .fact-t {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-purple-deep);
+    margin-bottom: 0.75rem;
+  }
+  dl {
+    margin: 0;
+    display: grid;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 0;
+    border-top: 1px dashed var(--color-gray-200);
+    font-size: 0.9375rem;
+  }
+  dt {
+    color: var(--color-gray-600);
+  }
+  dd {
+    margin: 0;
+    font-weight: 700;
+    color: var(--color-ink);
+    text-align: right;
+  }
+  .fact-n {
+    margin: 0.6rem 0 0;
+    font-size: 0.8125rem;
+    color: var(--color-gray-600);
+  }
+</style>

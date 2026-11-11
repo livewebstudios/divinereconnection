@@ -1,0 +1,335 @@
+/* Divine ReConnection: design tokens and base styles.
+   Palette from the design handoff. Lavender never carries text on a light background. */
+
+:root {
+  --color-purple-deep: #4b2e83;
+  --color-purple-ink: #2e1a55;
+  --color-purple: #6b4fa0;
+  --color-lavender: #ad93c4;
+  --color-lavender-soft: #d9cce8;
+  --color-lavender-mist: #e9e2f1;
+  --color-ink: #2b2a30;
+  --color-gray-600: #5e5c66;
+  --color-gray-200: #dcdae0;
+  --color-gray-100: #eceaf0;
+  --color-gray-50: #f5f4f7;
+  --color-white: #ffffff;
+  --color-paper: #fdfcf9;
+
+  --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-hand: 'Caveat', 'Bradley Hand', cursive;
+
+  --step--1: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
+  --step-0: clamp(1.0625rem, 1.03rem + 0.15vw, 1.125rem);
+  --step-1: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+  --step-2: clamp(1.6rem, 1.35rem + 1vw, 2.25rem);
+  --step-3: clamp(2.1rem, 1.6rem + 2.2vw, 3.5rem);
+  --step-4: clamp(2.7rem, 1.8rem + 4vw, 5.25rem);
+
+  --radius-sm: 12px;
+  --radius: 20px;
+  --radius-lg: 32px;
+  --radius-pill: 999px;
+
+  --shadow-soft: 0 1px 2px rgba(46, 26, 85, 0.06), 0 8px 24px -8px rgba(46, 26, 85, 0.16);
+  --shadow-lift: 0 2px 4px rgba(46, 26, 85, 0.06), 0 24px 48px -16px rgba(46, 26, 85, 0.28);
+  --shadow-paper: 0 1px 1px rgba(46, 26, 85, 0.08), 0 12px 28px -10px rgba(46, 26, 85, 0.3);
+
+  --wrap: 1200px;
+  --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
+  --section-y: clamp(5rem, 3rem + 7vw, 9.5rem);
+  --header-h: 84px;
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--header-h) + 16px);
+}
+
+body {
+  margin: 0;
+  background: var(--color-gray-50);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: clip;
+}
+
+img,
+svg,
+video,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+img {
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--color-purple-deep);
+  line-height: 1.05;
+  letter-spacing: -0.01em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+h1 {
+  font-size: var(--step-4);
+}
+h2 {
+  font-size: var(--step-3);
+}
+h3 {
+  font-size: var(--step-2);
+  line-height: 1.12;
+}
+
+p {
+  margin: 0 0 1em;
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--color-purple);
+  text-underline-offset: 0.2em;
+  text-decoration-thickness: 1px;
+}
+a:hover {
+  color: var(--color-purple-deep);
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-purple);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+::selection {
+  background: var(--color-lavender-soft);
+  color: var(--color-purple-ink);
+}
+
+.wrap {
+  width: min(100% - 2 * var(--gutter), var(--wrap));
+  margin-inline: auto;
+}
+
+.section {
+  padding-block: var(--section-y);
+  position: relative;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  z-index: 200;
+  background: var(--color-purple-deep);
+  color: var(--color-white);
+  padding: 0.75rem 1.25rem;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+}
+.skip-link:focus {
+  top: 1rem;
+  color: var(--color-white);
+}
+
+/* Eyebrow pill, the template's "Features" chip, used to name a section's job */
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.35rem 0.9rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-white);
+  border: 1px solid var(--color-gray-200);
+  box-shadow: 0 1px 2px rgba(46, 26, 85, 0.06);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-purple-deep);
+}
+.eyebrow::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-purple);
+}
+
+.lede {
+  font-size: var(--step-1);
+  line-height: 1.55;
+  color: var(--color-gray-600);
+  max-width: 38ch;
+}
+
+.section-head {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 1.1rem;
+  margin-bottom: clamp(2.5rem, 2rem + 3vw, 4.5rem);
+}
+.section-head .lede {
+  max-width: 52ch;
+  margin: 0;
+}
+
+/* Buttons */
+.btn {
+  --btn-bg: var(--color-purple-deep);
+  --btn-fg: var(--color-white);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 0.8rem 1.6rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font: 600 1rem/1 var(--font-body);
+  letter-spacing: 0.01em;
+  text-decoration: none;
+  cursor: pointer;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 10px 24px -10px rgba(75, 46, 131, 0.7);
+  transition: transform 0.35s var(--ease-out), box-shadow 0.35s var(--ease-out), background-color 0.2s;
+}
+.btn:hover {
+  color: var(--btn-fg);
+  background: var(--color-purple-ink);
+  transform: translateY(-2px);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), 0 16px 32px -12px rgba(75, 46, 131, 0.8);
+}
+.btn:active {
+  transform: translateY(0) scale(0.98);
+}
+.btn .arrow {
+  transition: transform 0.35s var(--ease-out);
+}
+.btn:hover .arrow {
+  transform: translateX(3px);
+}
+
+.btn--ghost {
+  --btn-bg: rgba(255, 255, 255, 0.85);
+  --btn-fg: var(--color-purple-deep);
+  border-color: var(--color-gray-200);
+  box-shadow: 0 1px 2px rgba(46, 26, 85, 0.06);
+  backdrop-filter: blur(8px);
+}
+.btn--ghost:hover {
+  background: var(--color-white);
+  border-color: var(--color-lavender);
+  color: var(--color-purple-deep);
+  box-shadow: var(--shadow-soft);
+}
+
+.btn--light {
+  --btn-bg: var(--color-white);
+  --btn-fg: var(--color-purple-deep);
+}
+.btn--light:hover {
+  background: var(--color-lavender-mist);
+  color: var(--color-purple-ink);
+}
+
+.btn--sm {
+  min-height: 42px;
+  padding: 0.55rem 1.1rem;
+  font-size: 0.9375rem;
+}
+
+.text-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  color: var(--color-purple-deep);
+  text-decoration: none;
+  border-bottom: 1px solid var(--color-lavender);
+  padding-bottom: 2px;
+  transition: gap 0.3s var(--ease-out), border-color 0.2s;
+}
+.text-link:hover {
+  gap: 0.65rem;
+  border-color: var(--color-purple-deep);
+}
+
+/* Paper objects (prayer notes, testimonial notes) share one material */
+.paper {
+  background: var(--color-paper);
+  border-radius: 6px;
+  box-shadow: var(--shadow-paper);
+  position: relative;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  background: var(--color-lavender-mist);
+  color: var(--color-purple-deep);
+  white-space: nowrap;
+}
+
+/* Scroll reveals. Hidden state only applies when JS motion is running,
+   so content is never lost without scripts or with reduced motion. */
+.motion-ok [data-reveal]:not(.revealed) {
+  opacity: 0;
+  transform: translateY(24px);
+}
+.motion-ok [data-pop]:not(.revealed) {
+  opacity: 0;
+  transform: scale(0.85) rotate(8deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

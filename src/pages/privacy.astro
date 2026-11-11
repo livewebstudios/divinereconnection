@@ -1,0 +1,55 @@
+---
+// Privacy policy. Plain draft for Jon to approve or replace.
+import Base from '../layouts/Base.astro';
+import PageHero from '../components/PageHero.astro';
+import { SITE } from '../config';
+const schema = [{ '@context': 'https://schema.org', '@type': 'WebPage', name: 'Privacy Policy' }];
+---
+
+<Base title="Privacy Policy: Divine ReConnection" description="How Divine ReConnection handles what you share through this website." schema={schema}>
+  <PageHero eyebrow="Privacy" title="Your privacy." intro="What happens to what you share on this site, in plain words." />
+  <section class="section">
+    <div class="wrap prose">
+      <h2>What you send us</h2>
+      <p>
+        When you send a session request, a prayer request or an event inquiry, the details you enter are delivered to Stella by email
+        through Formspree, a form service. Prayer requests and session details are personal. They are read only by Stella and are never
+        sold or shared.
+      </p>
+      <h2>Newsletter</h2>
+      <p>
+        If you join the list for workshops and events, your email address is stored with Mailchimp. Every email includes a link to
+        unsubscribe at any time.
+      </p>
+      <h2>Analytics</h2>
+      <p>
+        This site uses Google Analytics to count visits and see which pages are helpful. It does not identify you personally. Podcast
+        videos from YouTube load only when you press play.
+      </p>
+      <h2>Questions</h2>
+      <p>
+        Call <a href={SITE.phoneHref}>{SITE.phone}</a> or email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> to ask what we hold
+        about you or to have it removed.
+      </p>
+      <p class="updated">Last updated November 2026.</p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .prose {
+    max-width: 68ch;
+  }
+  .prose h2 {
+    font-size: var(--step-2);
+    margin: 2.5rem 0 0.75rem;
+  }
+  .prose h2:first-child {
+    margin-top: 0;
+  }
+  .updated {
+    margin-top: 3rem;
+    color: var(--color-gray-600);
+    font-size: 0.9375rem;
+  }
+</style>

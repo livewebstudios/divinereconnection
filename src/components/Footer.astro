@@ -1,0 +1,312 @@
+---
+// Footer as the last invitation, the way the reference template closes on
+// its own headline. Deep purple band so it reads as the end of the page.
+// Order of jobs: 1) one more chance to reach out, 2) the newsletter Stella
+// already uses for workshops, 3) the practical facts (where, how, when),
+// 4) every page one tap away, 5) credit and badge.
+import { rel } from '../lib/url';
+import { SITE, FORMS } from '../config';
+import { services } from '../data/services';
+import Petal from './Petal.astro';
+
+const u = Astro.url;
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer" data-parallax-scope>
+  <div class="card">
+    <div class="objects" aria-hidden="true">
+      <div class="obj obj-p1" data-parallax="0.3" data-parallax-rotate="40"><Petal tone="blush" size={64} /></div>
+      <div class="obj obj-p2" data-parallax="0.2" data-parallax-rotate="-30"><Petal tone="lavender" size={44} /></div>
+    </div>
+
+    <div class="top">
+      <div class="invite">
+        <img class="logo" src={rel('images/logo-white.svg', u)} alt={SITE.logoAlt} width="775" height="333" loading="lazy" />
+        <p class="headline">When you are ready, Stella is here.</p>
+        <div class="ctas">
+          <a class="btn btn--light" href={rel('contact/', u)}>Request a session <span class="arrow" aria-hidden="true">→</span></a>
+          <a class="btn btn--outline" href={rel('services/prayer/', u)}>Send a prayer request</a>
+        </div>
+      </div>
+
+      <form class="news" action={FORMS.newsletter} method="post" target="_blank" rel="noopener">
+        <p class="news-title" id="news-title">Workshops and events</p>
+        <p class="news-copy">Sign up to hear about Stella’s workshops and upcoming events.</p>
+        <div class="news-row">
+          <label class="sr-only" for="news-email">Email address</label>
+          <input id="news-email" type="email" name="EMAIL" autocomplete="email" placeholder="Your email" required aria-describedby="news-title" />
+          <button class="btn btn--light btn--sm" type="submit">Join the list</button>
+        </div>
+        <div class="hp" aria-hidden="true"><input type="text" name="b_honeypot" tabindex="-1" value="" /></div>
+      </form>
+    </div>
+
+    <div class="cols">
+      <div class="col">
+        <p class="col-title">Where and when</p>
+        <p>{SITE.city}, {SITE.region}<br />In person across Essex County</p>
+        <p>By phone or remote, from anywhere<br />Hours by appointment</p>
+      </div>
+      <div class="col">
+        <p class="col-title">Reach Stella</p>
+        <ul>
+          <li><a href={SITE.phoneHref}>{SITE.phone}</a></li>
+          <li><a href={`mailto:${SITE.email}`} class="email">{SITE.email}</a></li>
+          <li><a href={SITE.whatsappHref} target="_blank" rel="noopener">WhatsApp</a></li>
+        </ul>
+      </div>
+      <nav class="col" aria-label="Services">
+        <p class="col-title">Services</p>
+        <ul class="caps">
+          {services.map((s) => <li><a href={rel(`services/${s.slug}/`, u)}>{s.nav}</a></li>)}
+        </ul>
+      </nav>
+      <nav class="col" aria-label="Footer">
+        <p class="col-title">Pages</p>
+        <ul class="caps">
+          <li><a href={rel('', u)}>Home</a></li>
+          <li><a href={rel('about/', u)}>About</a></li>
+          <li><a href={rel('testimonials/', u)}>Testimonials</a></li>
+          <li><a href={rel('events/', u)}>Events</a></li>
+          <li><a href={rel('blog/', u)}>Blog</a></li>
+          <li><a href={rel('contact/', u)}>Contact</a></li>
+          <li><a href={rel('privacy/', u)}>Privacy</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="base">
+      <p>© {year} {SITE.name}. All rights reserved.</p>
+      <div class="credit">
+        <span class="footer-credit">Powered by <a href="https://livewebstudios.com" target="_blank" rel="noopener">Live Web Studios</a></span>
+        <img class="badge" src={rel('images/verifiedsecured.png', u)} alt="Verified and secured by Live Web Studios" width="150" height="37" loading="lazy" />
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    padding: clamp(3rem, 2rem + 4vw, 6rem) var(--gutter) var(--gutter);
+  }
+  .card {
+    position: relative;
+    max-width: 1360px;
+    margin-inline: auto;
+    overflow: hidden;
+    border-radius: var(--radius-lg);
+    padding: clamp(2.5rem, 1.5rem + 4vw, 5rem) clamp(1.5rem, 1rem + 4vw, 5rem) 1.5rem;
+    color: #f4effa;
+    background:
+      radial-gradient(120% 80% at 85% 0%, rgba(173, 147, 196, 0.35), transparent 60%),
+      radial-gradient(80% 60% at 0% 100%, rgba(107, 79, 160, 0.55), transparent 70%),
+      var(--color-purple-deep);
+  }
+
+  .objects {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+  .obj {
+    position: absolute;
+  }
+  .obj-p1 {
+    right: 9%;
+    top: 36px;
+  }
+  .obj-p2 {
+    right: 42%;
+    top: 90px;
+  }
+
+  .top {
+    position: relative;
+    display: grid;
+    gap: 3rem;
+    padding-bottom: 3rem;
+  }
+  .logo {
+    width: 230px;
+    margin-bottom: 1.75rem;
+  }
+  .headline {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--step-3);
+    line-height: 1.04;
+    color: var(--color-white);
+    max-width: 14ch;
+    margin-bottom: 1.75rem;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+  .btn--outline {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-white);
+    border-color: rgba(255, 255, 255, 0.45);
+    box-shadow: none;
+  }
+  .btn--outline:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: var(--color-white);
+  }
+
+  .news {
+    position: relative;
+    z-index: 1;
+    align-self: end;
+    max-width: 440px;
+    padding: 1.5rem;
+    border-radius: var(--radius);
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    backdrop-filter: blur(6px);
+  }
+  .news-title {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-white);
+    margin-bottom: 0.35rem;
+  }
+  .news-copy {
+    color: #e3d9ef;
+    font-size: 0.9375rem;
+  }
+  .news-row {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.35rem;
+    border-radius: var(--radius-pill);
+    background: var(--color-white);
+  }
+  .news-row input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    padding: 0 0.9rem;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--color-ink);
+  }
+  .news-row input::placeholder {
+    color: var(--color-gray-600);
+  }
+  .news-row input:focus {
+    outline: none;
+  }
+  .news-row:focus-within {
+    outline: 3px solid var(--color-lavender);
+    outline-offset: 2px;
+  }
+  .news-row .btn {
+    --btn-bg: var(--color-purple-deep);
+    --btn-fg: var(--color-white);
+  }
+  .news-row .btn:hover {
+    background: var(--color-purple-ink);
+    color: var(--color-white);
+  }
+  .hp {
+    position: absolute;
+    left: -5000px;
+  }
+
+  .cols {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 2rem;
+    padding: 2.5rem 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    font-size: 0.9375rem;
+    color: #e3d9ef;
+  }
+  .col p {
+    margin-bottom: 0.75rem;
+  }
+  .col-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-white) !important;
+  }
+  .col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.5rem;
+  }
+  .col a {
+    color: #f4effa;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.2s;
+  }
+  .col a:hover {
+    color: var(--color-white);
+    border-color: var(--color-lavender);
+  }
+  .caps a {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .email {
+    word-break: break-all;
+  }
+
+  .base {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.16);
+    font-size: 0.875rem;
+    color: #d9cce8;
+  }
+  .base p {
+    margin: 0;
+  }
+  .credit {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .credit a {
+    color: var(--color-white);
+  }
+  .badge {
+    width: 150px;
+    height: auto;
+  }
+
+  @media (min-width: 960px) {
+    .top {
+      grid-template-columns: 1.2fr 1fr;
+      align-items: end;
+    }
+  }
+  @media (max-width: 959px) {
+    .obj-p2 {
+      display: none;
+    }
+    .obj-p1 {
+      right: 24px;
+      top: 24px;
+    }
+  }
+</style>

@@ -1,0 +1,359 @@
+---
+// Service page template, shared by all five services. Three blocks only:
+// hero (what it is, the practical facts), "is this for you / what to expect"
+// (self-recognition and what happens), then questions beside the form, so
+// the last doubt and the way to act sit next to each other.
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FactCard from '../../components/FactCard.astro';
+import Faq from '../../components/Faq.astro';
+import Petal from '../../components/Petal.astro';
+import RequestForm from '../../components/islands/RequestForm';
+import { services, serviceOptions, SUPPORT_LINE, type Service } from '../../data/services';
+import { SITE, FORMS } from '../../config';
+import { rel } from '../../lib/url';
+
+export function getStaticPaths() {
+  return services.map((s) => ({ params: { slug: s.slug }, props: { s } }));
+}
+
+const { s } = Astro.props as { s: Service };
+const u = Astro.url;
+const isPrayer = s.slug === 'prayer';
+const isHealing = s.slug === 'pranic-healing';
+const isReadings = s.slug === 'readings';
+const isGrief = s.slug === 'spiritual-communication';
+
+const facts = isPrayer
+  ? [
+      { k: 'Who it is for', v: 'Anyone, any faith' },
+      { k: 'How', v: 'Written request or by phone' },
+      { k: 'Read by', v: 'Stella only' },
+    ]
+  : [
+      { k: 'Price', v: s.price ? `${s.price} per session` : 'Ask Stella' },
+      { k: 'Where', v: 'Montclair, phone or remote' },
+      { k: 'Booking', v: 'By request' },
+    ];
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: s.name,
+    serviceType: s.name,
+    description: s.description,
+    provider: { '@id': `${SITE.url}/#business` },
+    areaServed: ['Essex County, NJ', 'Remote'],
+    ...(s.price ? { offers: { '@type': 'Offer', price: s.price.replace('$', ''), priceCurrency: 'USD' } } : {}),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: s.faqs.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: f.a } })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE.url}/` },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: `${SITE.url}/services/` },
+      { '@type': 'ListItem', position: 3, name: s.name, item: `${SITE.url}/services/${s.slug}/` },
+    ],
+  },
+];
+const others = services.filter((o) => o.slug !== s.slug && o.door === s.door);
+---
+
+<Base title={s.title} description={s.description} schema={schema}>
+  <PageHero eyebrow={s.name} title={s.h1} intro={s.intro}>
+    <Fragment slot="actions">
+      <a class="btn" href="#request">{isPrayer ? 'Send a prayer request' : 'Request a session'} <span class="arrow" aria-hidden="true">→</span></a>
+      {s.price && <span class="price-chip"><strong>{s.price}</strong> {s.priceNote}</span>}
+    </Fragment>
+    <Fragment slot="aside">
+      <FactCard title={isPrayer ? 'Prayer with Stella' : s.nav} rows={facts} />
+      <div class="hero-petal"><Petal tone="blush" size={58} /></div>
+    </Fragment>
+  </PageHero>
+
+  <section class="section fit" aria-labelledby="fit-title">
+    <div class="wrap fit-grid">
+      <div class="fit-who" data-reveal-group>
+        <h2 id="fit-title" data-reveal>Is this for you?</h2>
+        <p class="lede" data-reveal>{isPrayer ? 'Prayer is for anyone who needs it.' : 'People usually come to this when one of these feels familiar.'}</p>
+        <ul class="checks" data-reveal>
+          {s.forWho.map((w) => <li>{w}</li>)}
+        </ul>
+        {
+          isPrayer && (
+            <blockquote class="verse" data-reveal>
+              <p>“Freely you have received; freely give.”</p>
+              <cite>Matthew 10:8</cite>
+            </blockquote>
+          )
+        }
+        {
+          isHealing && (
+            <p class="support" data-reveal>
+              <strong>Please note.</strong> {SUPPORT_LINE}
+            </p>
+          )
+        }
+      </div>
+
+      <div class="expect">
+        <h2 class="expect-title" data-reveal>What to expect</h2>
+        <ol class="ex-list" data-reveal-group>
+          {
+            s.expect.map((e, i) => (
+              <li class="ex" data-reveal>
+                <span class="ex-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h3>{e.heading}</h3>
+                  <p>{e.body}</p>
+                </div>
+              </li>
+            ))
+          }
+        </ol>
+        {
+          isReadings && (
+            <p class="ex-more" data-reveal>
+              Planning a gathering? <a class="text-link" href={rel('events/', u)}>Readings for groups and events <span aria-hidden="true">→</span></a>
+            </p>
+          )
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="section ask" id="request" aria-labelledby="ask-title">
+    <div class="wrap ask-grid">
+      <div class="ask-faq">
+        <h2 id="ask-title" data-reveal>Questions people ask</h2>
+        <Faq items={s.faqs} />
+        {
+          others.length > 0 && (
+            <div class="related" data-reveal>
+              <p class="related-k">Looking for something close to this?</p>
+              <ul>
+                {others.map((o) => (
+                  <li>
+                    <a class="text-link" href={rel(`services/${o.slug}/`, u)}>
+                      {o.name} <span aria-hidden="true">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </div>
+      <div class="ask-form" data-reveal>
+        <h2 class="form-title">{isPrayer ? 'Send a prayer request' : 'Request a session'}</h2>
+        <p class="form-sub">{isPrayer ? 'Share as much or as little as you like.' : 'Stella replies personally to find a time.'}</p>
+        <RequestForm
+          client:visible
+          kind={isPrayer ? 'prayer' : 'session'}
+          action={isPrayer ? FORMS.prayer : FORMS.contact}
+          services={serviceOptions}
+          defaultService={s.formService}
+          phone={SITE.phone}
+          phoneHref={SITE.phoneHref}
+          email={SITE.email}
+        />
+        {isReadings && <p class="disclaimer">Readings are for spiritual guidance. They are not legal, medical or financial advice.</p>}
+        {isGrief && <p class="disclaimer">{SUPPORT_LINE}</p>}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .price-chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: var(--radius-pill);
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid var(--color-gray-200);
+    color: var(--color-gray-600);
+    font-size: 0.9375rem;
+    align-self: center;
+  }
+  .price-chip strong {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-purple-deep);
+  }
+  .hero-petal {
+    position: absolute;
+    left: 6%;
+    bottom: -10px;
+    rotate: -30deg;
+  }
+
+  .fit-grid,
+  .ask-grid {
+    display: grid;
+    gap: clamp(3rem, 2rem + 4vw, 6rem);
+  }
+  @media (min-width: 960px) {
+    .fit-grid {
+      grid-template-columns: 0.9fr 1.1fr;
+      align-items: start;
+    }
+    .fit-who {
+      position: sticky;
+      top: calc(var(--header-h) + 3rem);
+    }
+    .ask-grid {
+      grid-template-columns: 0.85fr 1.15fr;
+      align-items: start;
+    }
+  }
+  .fit-who h2 {
+    margin-bottom: 1rem;
+  }
+  .fit-who .lede {
+    margin-bottom: 2rem;
+  }
+  .checks {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .checks li {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+    font-size: var(--step-0);
+  }
+  .checks li::before {
+    content: '';
+    flex: none;
+    width: 24px;
+    height: 24px;
+    margin-top: 2px;
+    border-radius: 50%;
+    background: var(--color-purple-deep)
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='m7 12.5 3.2 3.2L17 9' fill='none' stroke='%23fff' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center/contain no-repeat;
+  }
+  .verse {
+    margin: 2.5rem 0 0;
+    padding: 1.5rem 1.75rem;
+    border-radius: 20px;
+    background: var(--color-lavender-mist);
+  }
+  .verse p {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: var(--step-2);
+    line-height: 1.2;
+    color: var(--color-purple-deep);
+  }
+  .verse cite {
+    font-style: normal;
+    font-weight: 700;
+    font-size: 0.875rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-gray-600);
+  }
+  .support {
+    margin: 2.5rem 0 0;
+    padding: 1.25rem 1.5rem;
+    border-radius: 18px;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-left: 4px solid var(--color-purple);
+    color: var(--color-ink);
+  }
+
+  .expect-title {
+    margin-bottom: 2rem;
+  }
+  .ex-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1rem;
+  }
+  .ex {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 1.25rem;
+    padding: 1.6rem 1.75rem;
+    border-radius: 24px;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    transition:
+      transform 0.5s var(--ease-out),
+      box-shadow 0.5s var(--ease-out);
+  }
+  .ex:hover {
+    transform: translateX(6px);
+    box-shadow: var(--shadow-soft);
+  }
+  .ex-n {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.75rem;
+    line-height: 1;
+    color: var(--color-lavender);
+  }
+  .ex h3 {
+    font-size: 1.6rem;
+    margin-bottom: 0.4rem;
+  }
+  .ex p {
+    margin: 0;
+    color: var(--color-gray-600);
+  }
+  .ex-more {
+    margin-top: 1.75rem;
+    color: var(--color-gray-600);
+  }
+
+  .ask {
+    background: linear-gradient(180deg, var(--color-gray-50), var(--color-lavender-mist));
+  }
+  .ask-faq h2 {
+    margin-bottom: 2rem;
+  }
+  .related {
+    margin-top: 2.5rem;
+  }
+  .related-k {
+    font-weight: 700;
+    color: var(--color-ink);
+  }
+  .related ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.6rem;
+    justify-items: start;
+  }
+  .form-title {
+    font-size: var(--step-3);
+    margin-bottom: 0.5rem;
+  }
+  .form-sub {
+    color: var(--color-gray-600);
+    margin-bottom: 1.75rem;
+  }
+  .disclaimer {
+    margin: 1.25rem 0 0;
+    font-size: 0.9375rem;
+    color: var(--color-gray-600);
+  }
+</style>

@@ -1,0 +1,77 @@
+---
+// Kind words. Proof from people who already walked through a door. Two
+// notes, not a carousel: the launch set is small and honest, so each gets
+// room to be read. Only non-medical testimonials appear on the home page.
+import TestimonialNote from '../TestimonialNote.astro';
+import Petal from '../Petal.astro';
+import { testimonials } from '../../data/testimonials';
+import { rel } from '../../lib/url';
+const u = Astro.url;
+const picks = testimonials.filter((t) => t.home);
+---
+
+<section class="section kind" aria-labelledby="kind-title" data-parallax-scope>
+  <div class="wrap">
+    <div class="section-head" data-reveal-group>
+      <p class="eyebrow" data-reveal>Kind words</p>
+      <h2 id="kind-title" data-reveal>What people say afterward.</h2>
+    </div>
+
+    <div class="notes">
+      {
+        picks.map((t, i) => (
+          <div class={`slot slot-${i}`} data-parallax={i === 0 ? '0.06' : '0.16'}>
+            <TestimonialNote t={t} data-pop />
+          </div>
+        ))
+      }
+      <div class="pa" data-parallax="0.4" data-parallax-rotate="60" aria-hidden="true"><Petal tone="blush" size={60} /></div>
+      <div class="pb" data-parallax="0.28" data-parallax-rotate="-40" aria-hidden="true"><Petal tone="deep" size={38} /></div>
+    </div>
+
+    <p class="more" data-reveal>
+      <a class="text-link" href={rel('testimonials/', u)}>Read more from people Stella has worked with <span aria-hidden="true">→</span></a>
+    </p>
+  </div>
+</section>
+
+<style>
+  .kind {
+    overflow: hidden;
+  }
+  .notes {
+    position: relative;
+    display: grid;
+    gap: 2rem;
+    max-width: 1040px;
+    margin-inline: auto;
+  }
+  @media (min-width: 820px) {
+    .notes {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+    .slot-0 {
+      rotate: -2deg;
+    }
+    .slot-1 {
+      rotate: 2.5deg;
+      margin-top: 4rem;
+    }
+  }
+  .pa {
+    position: absolute;
+    left: 47%;
+    top: -2rem;
+  }
+  .pb {
+    position: absolute;
+    right: -1rem;
+    bottom: -1rem;
+  }
+  .more {
+    text-align: center;
+    margin: clamp(3rem, 2rem + 3vw, 5rem) 0 0;
+  }
+</style>

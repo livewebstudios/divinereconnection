@@ -1,0 +1,362 @@
+---
+// Sticky header. Logo left (brand first, always a way home), nav in the
+// middle, and on the right the two ways people actually start: the phone
+// (many faith-door visitors would rather call) and the request button.
+// Once you scroll it tucks into a floating pill so the content gets the room.
+import { rel, isCurrent } from '../lib/url';
+import { SITE } from '../config';
+import { services } from '../data/services';
+import MobileNav from './islands/MobileNav';
+
+const u = Astro.url;
+const links = [
+  { label: 'Home', href: '' },
+  { label: 'About', href: 'about/' },
+  { label: 'Services', href: 'services/', children: true },
+  { label: 'Testimonials', href: 'testimonials/' },
+  { label: 'Events', href: 'events/' },
+  { label: 'Blog', href: 'blog/' },
+  { label: 'Contact', href: 'contact/' },
+];
+const blurbs: Record<string, string> = {
+  prayer: 'Someone to pray with you',
+  'pranic-healing': 'No-touch energy healing, near or far',
+  'spiritual-guidance': 'A conversation for a crossroads',
+  readings: 'Private readings and gatherings',
+  'spiritual-communication': 'For when you are missing someone',
+};
+const mobileLinks = links.map((l) => ({ label: l.label, href: rel(l.href, u), current: isCurrent(l.href, u) }));
+const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/${s.slug}/`, u) }));
+---
+
+<header class="site-header" data-header>
+  <div class="bar">
+    <a class="brand" href={rel('', u)} aria-label="Divine ReConnection home">
+      <img src={rel('images/logoRGB.png', u)} alt={SITE.logoAlt} width="1200" height="515" />
+    </a>
+
+    <nav class="primary" aria-label="Main">
+      <ul>
+        {
+          links.map((l) =>
+            l.children ? (
+              <li class="has-menu" data-menu>
+                <a href={rel(l.href, u)} aria-current={isCurrent(l.href, u) ? 'page' : undefined}>
+                  {l.label}
+                </a>
+                <button class="menu-toggle" aria-expanded="false" aria-controls="services-menu" data-menu-toggle>
+                  <span class="sr-only">Show services</span>
+                  <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true">
+                    <path d="M2.5 4.5 6 8l3.5-3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                  </svg>
+                </button>
+                <div class="menu" id="services-menu">
+                  <ul>
+                    {services.map((s) => (
+                      <li>
+                        <a href={rel(`services/${s.slug}/`, u)}>
+                          <span class="m-name">{s.nav}</span>
+                          <span class="m-blurb">{blurbs[s.slug]}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                  <a class="m-all" href={rel('services/', u)}>All services and prices</a>
+                </div>
+              </li>
+            ) : (
+              <li>
+                <a href={rel(l.href, u)} aria-current={isCurrent(l.href, u) ? 'page' : undefined}>
+                  {l.label}
+                </a>
+              </li>
+            ),
+          )
+        }
+      </ul>
+    </nav>
+
+    <div class="actions">
+      <a class="phone" href={SITE.phoneHref}>
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
+          <path
+            d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"
+            fill="currentColor"></path>
+        </svg>
+        <span><span class="sr-only">Call Stella at </span>{SITE.phone}</span>
+      </a>
+      <a class="btn btn--sm cta" href={rel('contact/', u)}>Request a session</a>
+      <MobileNav client:media="(max-width: 1099px)" links={mobileLinks} services={mobileServices} phone={SITE.phone} phoneHref={SITE.phoneHref} cta={rel('contact/', u)} />
+    </div>
+  </div>
+</header>
+
+<script>
+  // Services dropdown: hover opens it on desktop, the chevron button opens it
+  // for keyboard and touch, Escape closes it.
+  document.querySelectorAll<HTMLElement>('[data-menu]').forEach((item) => {
+    const btn = item.querySelector<HTMLButtonElement>('[data-menu-toggle]')!;
+    const set = (open: boolean) => {
+      item.classList.toggle('is-open', open);
+      btn.setAttribute('aria-expanded', String(open));
+    };
+    btn.addEventListener('click', () => set(!item.classList.contains('is-open')));
+    item.addEventListener('mouseenter', () => set(true));
+    item.addEventListener('mouseleave', () => set(false));
+    item.addEventListener('focusout', (e) => {
+      if (!item.contains(e.relatedTarget as Node)) set(false);
+    });
+    item.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        set(false);
+        btn.focus();
+      }
+    });
+  });
+</script>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    padding: 12px var(--gutter) 0;
+    pointer-events: none;
+  }
+  .bar {
+    pointer-events: auto;
+    max-width: 1360px;
+    margin-inline: auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    height: 76px;
+    padding: 0 0.5rem 0 1rem;
+    border-radius: 22px;
+    border: 1px solid transparent;
+    transition:
+      background-color 0.45s var(--ease-out),
+      box-shadow 0.45s var(--ease-out),
+      border-color 0.45s var(--ease-out),
+      height 0.45s var(--ease-out),
+      max-width 0.6s var(--ease-out);
+  }
+  .site-header:global(.is-scrolled) .bar {
+    max-width: 1240px;
+    height: 66px;
+    background: rgba(255, 255, 255, 0.93);
+    backdrop-filter: blur(16px) saturate(1.4);
+    -webkit-backdrop-filter: blur(16px) saturate(1.4);
+    border-color: rgba(220, 218, 224, 0.9);
+    box-shadow: 0 12px 32px -18px rgba(46, 26, 85, 0.35);
+  }
+
+  .brand {
+    flex: none;
+    display: block;
+    border-radius: 8px;
+  }
+  .brand img {
+    height: 62px;
+    width: auto;
+    transition: height 0.45s var(--ease-out);
+  }
+  .site-header:global(.is-scrolled) .brand img {
+    height: 48px;
+  }
+
+  .primary {
+    display: none;
+  }
+  .primary > ul {
+    display: flex;
+    gap: 0.15rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .primary li {
+    position: relative;
+  }
+  .primary > ul > li > a {
+    display: block;
+    padding: 0.55rem 0.7rem;
+    border-radius: 10px;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: color 0.2s, background-color 0.2s;
+  }
+  .primary > ul > li > a:hover {
+    color: var(--color-purple-deep);
+    background: var(--color-lavender-mist);
+  }
+  .primary > ul > li > a {
+    position: relative;
+  }
+  .primary a[aria-current='page'] {
+    color: var(--color-purple-deep);
+  }
+  .primary a[aria-current='page']::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: 2px;
+    width: 5px;
+    height: 5px;
+    margin-left: -2.5px;
+    border-radius: 50%;
+    background: var(--color-purple);
+  }
+
+  .has-menu {
+    display: flex;
+    align-items: center;
+  }
+  .has-menu > a {
+    padding-right: 0.2rem !important;
+  }
+  .menu-toggle {
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 32px;
+    border: 0;
+    background: none;
+    color: var(--color-purple-deep);
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  .menu-toggle svg {
+    transition: transform 0.3s var(--ease-out);
+  }
+  .has-menu:global(.is-open) .menu-toggle svg {
+    transform: rotate(180deg);
+  }
+
+  .menu {
+    position: absolute;
+    top: calc(100% + 14px);
+    left: 50%;
+    width: 340px;
+    padding: 0.6rem;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    border-radius: 18px;
+    box-shadow: var(--shadow-lift);
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 8px) scale(0.98);
+    transform-origin: top center;
+    transition:
+      opacity 0.25s var(--ease-out),
+      transform 0.35s var(--ease-out),
+      visibility 0s 0.35s;
+  }
+  .menu::before {
+    content: '';
+    position: absolute;
+    inset: -16px 0 auto;
+    height: 16px;
+  }
+  .has-menu:global(.is-open) .menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0) scale(1);
+    transition:
+      opacity 0.25s var(--ease-out),
+      transform 0.35s var(--ease-out),
+      visibility 0s;
+  }
+  .menu ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .menu li a {
+    display: grid;
+    gap: 0.1rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+  }
+  .menu li a:hover {
+    background: var(--color-lavender-mist);
+  }
+  .m-name {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-purple-deep);
+  }
+  .m-blurb {
+    font-size: 0.875rem;
+    color: var(--color-gray-600);
+  }
+  .m-all {
+    display: block;
+    margin-top: 0.35rem;
+    padding: 0.75rem 0.85rem;
+    border-top: 1px solid var(--color-gray-100);
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--color-purple);
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .phone {
+    display: none;
+    align-items: center;
+    gap: 0.45rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    color: var(--color-purple-deep);
+    text-decoration: none;
+    padding: 0.5rem 0.6rem;
+    border-radius: 10px;
+    white-space: nowrap;
+  }
+  .phone:hover {
+    background: var(--color-lavender-mist);
+  }
+  .cta {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .cta {
+      display: inline-flex;
+    }
+  }
+  @media (max-width: 639px) {
+    .bar {
+      height: 66px;
+    }
+    .brand img {
+      height: 46px;
+    }
+  }
+  @media (min-width: 1100px) {
+    .primary {
+      display: block;
+    }
+  }
+  @media (min-width: 1280px) {
+    .phone {
+      display: inline-flex;
+    }
+  }
+</style>

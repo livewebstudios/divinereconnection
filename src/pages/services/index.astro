@@ -1,0 +1,249 @@
+---
+// Services overview. Five cards in the handoff's order, then the practical
+// details and the request form together, so someone comparing services can
+// act without another click.
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import FactCard from '../../components/FactCard.astro';
+import RequestForm from '../../components/islands/RequestForm';
+import { services, serviceOptions } from '../../data/services';
+import { SITE, FORMS } from '../../config';
+import { rel } from '../../lib/url';
+
+const u = Astro.url;
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: services.map((s, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `${SITE.url}/services/${s.slug}/`,
+      name: s.name,
+    })),
+  },
+];
+---
+
+<Base
+  title="Services: Prayer, Pranic Healing, Readings"
+  description="Five ways to work with Stella Crispo: prayer, Pranic Healing, intuitive guidance, readings and spiritual communication."
+  schema={schema}
+>
+  <PageHero
+    eyebrow="Services"
+    title="Five ways to work with Stella."
+    intro="Prayer, energy healing, guidance, readings and spiritual communication. Every one can happen in person in Montclair, by phone or remotely."
+  >
+    <Fragment slot="actions">
+      <a class="btn" href="#request">Request a session <span class="arrow" aria-hidden="true">→</span></a>
+    </Fragment>
+    <Fragment slot="aside">
+      <FactCard
+        title="At a glance"
+        rows={[
+          { k: 'Pranic Healing', v: '$65, sliding scale' },
+          { k: 'Intuitive Guidance', v: '$90' },
+          { k: 'Where', v: 'Montclair, phone, remote' },
+          { k: 'Hours', v: 'By appointment' },
+        ]}
+      />
+    </Fragment>
+  </PageHero>
+
+  <section class="section" aria-label="All services">
+    <div class="wrap">
+      <ul class="cards" data-reveal-group>
+        {
+          services.map((s, i) => (
+            <li class={`c c-${i}`} data-reveal>
+              <a href={rel(`services/${s.slug}/`, u)}>
+                <span class="c-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                <h2>{s.name}</h2>
+                <p>{s.card}</p>
+                <span class="c-foot">
+                  {s.price ? (
+                    <span class="c-price">
+                      <strong>{s.price}</strong> {s.priceNote}
+                    </span>
+                  ) : (
+                    <span class="c-price">Price on request</span>
+                  )}
+                  <span class="c-go">
+                    {s.nav} <span aria-hidden="true">→</span>
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="section request" id="request" aria-labelledby="req-title">
+    <div class="wrap req-grid">
+      <div class="req-info" data-reveal-group>
+        <h2 id="req-title" data-reveal>Request a session</h2>
+        <p class="lede" data-reveal>Not sure which service fits? Choose “Not sure yet” and tell Stella what is on your mind. She will help you decide.</p>
+        <dl class="how" data-reveal>
+          <div><dt>Where</dt><dd>In person in Montclair, NJ. By phone or remotely from anywhere.</dd></div>
+          <div><dt>When</dt><dd>By appointment. Stella replies to set a time that suits you.</dd></div>
+          <div><dt>Prefer to call?</dt><dd><a href={SITE.phoneHref}>{SITE.phone}</a></dd></div>
+        </dl>
+      </div>
+      <div data-reveal>
+        <RequestForm client:visible kind="session" action={FORMS.contact} services={serviceOptions} phone={SITE.phone} phoneHref={SITE.phoneHref} email={SITE.email} />
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cards {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+  }
+  @media (min-width: 760px) {
+    .cards {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (min-width: 1080px) {
+    .cards {
+      grid-template-columns: repeat(6, 1fr);
+    }
+    .c-0,
+    .c-1 {
+      grid-column: span 3;
+    }
+    .c-2,
+    .c-3,
+    .c-4 {
+      grid-column: span 2;
+    }
+  }
+  .c a {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 2rem;
+    border-radius: 28px;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    text-decoration: none;
+    color: var(--color-ink);
+    overflow: hidden;
+    transition:
+      transform 0.5s var(--ease-out),
+      box-shadow 0.5s var(--ease-out),
+      border-color 0.3s;
+  }
+  .c a::after {
+    content: '';
+    position: absolute;
+    right: -60px;
+    top: -60px;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--color-lavender-mist), transparent 70%);
+    transition: transform 0.8s var(--ease-out);
+  }
+  .c a:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lift);
+    border-color: var(--color-lavender-soft);
+  }
+  .c a:hover::after {
+    transform: scale(1.6);
+  }
+  .c-n {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--color-lavender);
+    margin-bottom: 2.5rem;
+  }
+  .c h2 {
+    font-size: var(--step-2);
+    margin-bottom: 0.75rem;
+  }
+  .c p {
+    color: var(--color-gray-600);
+  }
+  .c-foot {
+    margin-top: auto;
+    padding-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem;
+    border-top: 1px dashed var(--color-gray-200);
+  }
+  .c-price {
+    font-size: 0.875rem;
+    color: var(--color-gray-600);
+  }
+  .c-price strong {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-purple-deep);
+  }
+  .c-go {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-purple-deep);
+  }
+  .c-go span {
+    display: inline-block;
+    transition: transform 0.35s var(--ease-out);
+  }
+  .c a:hover .c-go span {
+    transform: translateX(4px);
+  }
+
+  .request {
+    background: linear-gradient(180deg, var(--color-gray-50), var(--color-lavender-mist));
+  }
+  .req-grid {
+    display: grid;
+    gap: 3rem;
+  }
+  @media (min-width: 960px) {
+    .req-grid {
+      grid-template-columns: 0.8fr 1.2fr;
+      align-items: start;
+    }
+  }
+  .req-info h2 {
+    margin-bottom: 1rem;
+  }
+  .how {
+    margin: 2rem 0 0;
+    display: grid;
+    gap: 1.25rem;
+  }
+  .how dt {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-purple);
+  }
+  .how dd {
+    margin: 0.25rem 0 0;
+    color: var(--color-ink);
+  }
+  .how a {
+    font-weight: 700;
+    font-size: 1.25rem;
+  }
+</style>

@@ -1,0 +1,321 @@
+---
+// How it works. First-timers hesitate because they do not know what happens
+// after they reach out, so this answers it before the final call to action.
+// The heading stays pinned while three steps scroll past; a rail fills as you
+// read, the scroll-linked storytelling the reference template uses.
+import { rel } from '../../lib/url';
+const u = Astro.url;
+---
+
+<section class="section how" aria-labelledby="how-title">
+  <div class="wrap grid">
+    <div class="pin">
+      <p class="eyebrow">How it works</p>
+      <h2 id="how-title">Reaching out is the hardest part. The rest is simple.</h2>
+      <p class="lede">No booking software, no waiting room. You write or call, and Stella answers you herself.</p>
+      <a class="btn" href={rel('contact/', u)}>Request a session <span class="arrow" aria-hidden="true">→</span></a>
+    </div>
+
+    <ol class="steps" data-steps>
+      <li class="rail" aria-hidden="true"><span class="rail-fill" data-rail></span></li>
+
+      <li class="step" data-step>
+        <span class="num" aria-hidden="true">1</span>
+        <div class="card">
+          <div class="obj obj-form" aria-hidden="true">
+            <div class="f-row"><span class="f-l">Your name</span><span class="f-v">Jen M.</span></div>
+            <div class="f-row"><span class="f-l">Looking for</span><span class="f-v">Pranic Healing</span></div>
+            <div class="f-row"><span class="f-l">How</span><span class="f-v"><span class="pill on">Remote</span><span class="pill">In person</span></span></div>
+            <div class="f-msg">It has been a heavy year. I would like to start somewhere.</div>
+          </div>
+          <h3>Reach out your way</h3>
+          <p>Send a session request, a prayer request or simply call. Say what you are looking for in your own words. There is no wrong way to ask.</p>
+        </div>
+      </li>
+
+      <li class="step" data-step>
+        <span class="num" aria-hidden="true">2</span>
+        <div class="card">
+          <div class="obj obj-reply" aria-hidden="true">
+            <span class="r-av">S</span>
+            <div class="r-b">
+              <p class="r-n">Stella</p>
+              <p>Thank you for writing, Jen. I’d be glad to work with you. Could we talk Thursday evening?</p>
+            </div>
+          </div>
+          <h3>Stella replies personally</h3>
+          <p>Every request is read by Stella and no one else. She gets back to you herself to answer questions and find a time that suits you.</p>
+        </div>
+      </li>
+
+      <li class="step" data-step>
+        <span class="num" aria-hidden="true">3</span>
+        <div class="card">
+          <div class="obj obj-ways" aria-hidden="true">
+            <span class="way"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21Z" fill="none" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="9.5" r="2.5" fill="currentColor"/></svg>In person</span>
+            <span class="way"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z" fill="currentColor"/></svg>By phone</span>
+            <span class="way"><svg viewBox="0 0 24 24" width="20" height="20"><path d="M3 12c3-4 6-4 9 0s6 4 9 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M3 17c3-4 6-4 9 0s6 4 9 0" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" opacity=".5"/></svg>Remote</span>
+          </div>
+          <h3>Meet the way that suits you</h3>
+          <p>In person in Montclair, by phone, or remotely from anywhere. Distance healing does not even need you there in real time.</p>
+        </div>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<script>
+  import { scroll, inView } from 'motion';
+  const steps = document.querySelector<HTMLElement>('[data-steps]');
+  const fill = document.querySelector<HTMLElement>('[data-rail]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.querySelectorAll('[data-step]').forEach((s) => {
+    if (reduce) return s.classList.add('is-on');
+    inView(s, () => s.classList.add('is-on'), { margin: '0px 0px -45% 0px' });
+  });
+  if (steps && fill && !reduce) {
+    scroll(
+      (p: number) => {
+        fill.style.transform = `scaleY(${p})`;
+      },
+      { target: steps, offset: ['start 70%', 'end 60%'] },
+    );
+  } else if (fill) {
+    fill.style.transform = 'scaleY(1)';
+  }
+</script>
+
+<style>
+  .how {
+    background: linear-gradient(180deg, var(--color-gray-50), var(--color-lavender-mist) 30%, var(--color-lavender-mist) 70%, var(--color-gray-50));
+  }
+  .grid {
+    display: grid;
+    gap: 3rem;
+  }
+  @media (min-width: 960px) {
+    .grid {
+      grid-template-columns: 0.85fr 1.15fr;
+      gap: clamp(3rem, 6vw, 7rem);
+      align-items: start;
+    }
+    .pin {
+      position: sticky;
+      top: calc(var(--header-h) + 3rem);
+    }
+  }
+  .pin h2 {
+    margin: 1rem 0 1.25rem;
+  }
+  .pin .lede {
+    margin-bottom: 2rem;
+  }
+
+  .steps {
+    position: relative;
+    list-style: none;
+    margin: 0;
+    padding: 0 0 0 4rem;
+    display: grid;
+    gap: clamp(2rem, 1rem + 5vw, 5rem);
+  }
+  .rail {
+    position: absolute;
+    left: 1.2rem;
+    top: 1.5rem;
+    bottom: 1.5rem;
+    width: 2px;
+    background: var(--color-gray-200);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .rail-fill {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(var(--color-lavender), var(--color-purple-deep));
+    transform-origin: top;
+    transform: scaleY(0);
+  }
+  .step {
+    position: relative;
+  }
+  .num {
+    position: absolute;
+    left: -4rem;
+    top: 0.75rem;
+    display: grid;
+    place-items: center;
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: 50%;
+    background: var(--color-white);
+    border: 2px solid var(--color-gray-200);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: var(--color-gray-600);
+    transition:
+      background-color 0.5s var(--ease-out),
+      border-color 0.5s,
+      color 0.5s,
+      transform 0.6s var(--ease-out);
+  }
+  .step:global(.is-on) .num {
+    background: var(--color-purple-deep);
+    border-color: var(--color-purple-deep);
+    color: var(--color-white);
+    transform: scale(1.08);
+  }
+  .card {
+    padding: 1.5rem;
+    border-radius: 26px;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    box-shadow: var(--shadow-soft);
+    transition:
+      transform 0.8s var(--ease-out),
+      opacity 0.8s var(--ease-out);
+  }
+  :global(.motion-ok) .step:not(:global(.is-on)) .card {
+    opacity: 0.35;
+    transform: translateY(24px) rotate(-1deg);
+  }
+  .card h3 {
+    margin: 1.5rem 0 0.6rem;
+  }
+  .card p {
+    color: var(--color-gray-600);
+    margin: 0;
+  }
+
+  .obj {
+    border-radius: 18px;
+    background: linear-gradient(160deg, var(--color-lavender-mist), #f6f2fa);
+    padding: 1.25rem;
+  }
+  .obj-form {
+    display: grid;
+    gap: 0.5rem;
+  }
+  .f-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 12px;
+    background: var(--color-white);
+    font-size: 0.875rem;
+  }
+  .f-l {
+    color: var(--color-gray-600);
+  }
+  .f-v {
+    font-weight: 600;
+    color: var(--color-ink);
+    display: flex;
+    gap: 0.35rem;
+  }
+  .pill {
+    padding: 0.15rem 0.6rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--color-gray-200);
+    font-size: 0.75rem;
+  }
+  .pill.on {
+    background: var(--color-purple-deep);
+    border-color: var(--color-purple-deep);
+    color: var(--color-white);
+  }
+  .f-msg {
+    padding: 0.75rem 0.85rem;
+    border-radius: 12px;
+    background: var(--color-white);
+    font-size: 0.875rem;
+    color: var(--color-ink);
+    border-left: 3px solid var(--color-lavender);
+  }
+
+  .obj-reply {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+  }
+  .r-av {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: var(--color-purple-deep);
+    color: var(--color-white);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  .r-b {
+    padding: 0.85rem 1rem;
+    border-radius: 4px 18px 18px 18px;
+    background: var(--color-white);
+    box-shadow: var(--shadow-soft);
+    font-size: 0.9375rem;
+    line-height: 1.5;
+  }
+  .r-b p {
+    margin: 0;
+    color: var(--color-ink);
+  }
+  .r-b .r-n {
+    font-weight: 700;
+    font-size: 0.8125rem;
+    color: var(--color-purple-deep);
+    margin-bottom: 0.2rem;
+  }
+
+  .obj-ways {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+  }
+  .way {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    border-radius: 14px;
+    background: var(--color-white);
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--color-purple-deep);
+    box-shadow: var(--shadow-soft);
+    transition: transform 0.6s var(--ease-out);
+  }
+  .step:global(.is-on) .way:nth-child(1) {
+    transition-delay: 0.1s;
+  }
+  .step:global(.is-on) .way:nth-child(2) {
+    transition-delay: 0.2s;
+  }
+  .step:global(.is-on) .way:nth-child(3) {
+    transition-delay: 0.3s;
+  }
+  :global(.motion-ok) .step:not(:global(.is-on)) .way {
+    transform: translateY(12px);
+  }
+
+  @media (max-width: 560px) {
+    .steps {
+      padding-left: 3.25rem;
+    }
+    .num {
+      left: -3.25rem;
+      width: 2.3rem;
+      height: 2.3rem;
+    }
+    .rail {
+      left: 1.05rem;
+    }
+  }
+</style>

@@ -1,0 +1,446 @@
+---
+// Home hero. Reference template: a big rounded stage with real-feeling
+// objects floating around the headline. Here the stage is Stella's purple
+// ocean and the objects are the three moments of working with her: a prayer
+// request on paper, a session request, and her personal reply. Petals float
+// on the water. Headline sits on the sky, left, where contrast is strongest.
+import Ocean from '../Ocean.astro';
+import PrayerNote from '../PrayerNote.astro';
+import Petal from '../Petal.astro';
+import { rel } from '../../lib/url';
+import { SITE } from '../../config';
+
+const u = Astro.url;
+---
+
+<section class="hero" aria-labelledby="hero-title" data-hero>
+  <div class="stage" data-hero-stage>
+    <Ocean horizon={0.3} horizonMobile={0.24} />
+
+    <div class="copy" data-parallax="0.18" data-parallax-scope>
+      <p class="eyebrow hero-eyebrow" data-enter>{SITE.city}, {SITE.region} · In person, by phone or remote</p>
+      <h1 id="hero-title" data-enter>Reconnect with the divine in&nbsp;you.</h1>
+      <p class="sub" data-enter>
+        Prayer, energy healing and spiritual guidance with Stella Crispo. In person in Montclair, NJ, or from wherever you are.
+      </p>
+      <div class="ctas" data-enter>
+        <a class="btn" href={rel('contact/', u)}>Request a session <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href={rel('services/prayer/', u)}>Send a prayer request</a>
+      </div>
+    </div>
+
+    <div class="objects" aria-hidden="true" data-pointer-field>
+      <div class="o o-session" data-depth="18">
+        <div class="bob bob-a">
+          <div class="session" data-enter-obj>
+            <div class="s-head">
+              <span class="avatar">JM</span>
+              <div>
+                <p class="s-title">Session request</p>
+                <p class="s-meta">Pranic Healing · Remote</p>
+              </div>
+            </div>
+            <div class="s-row">
+              <span class="s-when">Thursday evening</span>
+              <span class="s-status">
+                <span class="st st-1">Requested</span>
+                <span class="st st-2">Stella replied</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="o o-note" data-depth="34">
+        <div class="bob bob-b">
+          <div data-enter-obj class="note-tilt">
+            <PrayerNote note="Please keep my mom Ellen in your prayers this week." sign="with love, Dana" status="Prayed for by Stella" />
+          </div>
+        </div>
+      </div>
+
+      <div class="o o-reply" data-depth="24">
+        <div class="bob bob-c">
+          <div class="reply" data-enter-obj>
+            <span class="r-avatar">S</span>
+            <div>
+              <p class="r-name">Stella <span>· just now</span></p>
+              <p class="r-text">I’d be glad to. Does Thursday at 7 work for you?</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="o o-p1" data-depth="50"><div class="bob bob-water"><div data-enter-obj><Petal tone="blush" size={70} /></div></div></div>
+      <div class="o o-p2" data-depth="64"><div class="bob bob-water2"><div data-enter-obj><Petal tone="lavender" size={46} /></div></div></div>
+      <div class="o o-p3" data-depth="40"><div class="bob bob-water"><div data-enter-obj><Petal tone="deep" size={34} /></div></div></div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { animate, scroll, stagger } from 'motion';
+
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hero = document.querySelector<HTMLElement>('[data-hero]');
+  const stage = document.querySelector<HTMLElement>('[data-hero-stage]');
+
+  if (hero && stage && !reduce) {
+    // Entrance: copy rises in order, then the objects settle in from a turn.
+    animate('[data-enter]', { opacity: [0, 1], transform: ['translateY(28px)', 'translateY(0px)'] }, {
+      type: 'spring',
+      stiffness: 80,
+      damping: 18,
+      delay: stagger(0.1, { startDelay: 0.15 }),
+    });
+    animate(
+      '[data-enter-obj]',
+      { opacity: [0, 1], transform: ['translateY(40px) scale(0.9) rotate(-6deg)', 'translateY(0px) scale(1) rotate(0deg)'] },
+      { type: 'spring', stiffness: 70, damping: 14, delay: stagger(0.12, { startDelay: 0.55 }) },
+    );
+
+    // As you scroll away, the stage recedes a little, like the template's hero card.
+    scroll(animate(stage, { scale: [1, 0.94], borderRadius: ['32px', '48px'] }, { ease: 'linear' }), {
+      target: hero,
+      offset: ['start start', 'end start'],
+    });
+
+    // Objects lean toward the pointer on soft springs, deeper ones move more.
+    const items = [...document.querySelectorAll<HTMLElement>('[data-depth]')];
+    if (window.matchMedia('(pointer: fine)').matches) {
+      stage.addEventListener('pointermove', (e) => {
+        const r = stage.getBoundingClientRect();
+        const nx = (e.clientX - r.left) / r.width - 0.5;
+        const ny = (e.clientY - r.top) / r.height - 0.5;
+        items.forEach((el) => {
+          const d = parseFloat(el.dataset.depth || '20');
+          animate(el, { x: nx * d, y: ny * d * 0.7 }, { type: 'spring', stiffness: 60, damping: 16 });
+        });
+      });
+      stage.addEventListener('pointerleave', () => {
+        items.forEach((el) => animate(el, { x: 0, y: 0 }, { type: 'spring', stiffness: 50, damping: 14 }));
+      });
+    }
+
+    // Each object also drifts at its own speed as the page scrolls.
+    items.forEach((el) => {
+      const d = parseFloat(el.dataset.depth || '20');
+      scroll(
+        (p: number) => {
+          el.style.translate = `0 ${(-p * d * 4).toFixed(1)}px`;
+        },
+        { target: hero, offset: ['start start', 'end start'] },
+      );
+    });
+  }
+</script>
+
+<style>
+  .hero {
+    padding: 0 var(--gutter);
+    margin-top: -76px;
+  }
+  .stage {
+    position: relative;
+    max-width: 1360px;
+    margin-inline: auto;
+    min-height: clamp(720px, 100svh - 24px, 940px);
+    border-radius: 32px;
+    overflow: hidden;
+    isolation: isolate;
+    transform-origin: 50% 0;
+    padding: calc(var(--header-h) + clamp(2rem, 0.5rem + 4vw, 4.5rem)) clamp(1.25rem, 0.5rem + 4vw, 4.5rem) 3rem;
+  }
+
+  .copy {
+    position: relative;
+    z-index: 3;
+    max-width: 760px;
+  }
+  .hero-eyebrow {
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(6px);
+    text-transform: none;
+    letter-spacing: 0.02em;
+    font-size: 0.875rem;
+  }
+  h1 {
+    margin: 1.4rem 0 1.25rem;
+    font-size: clamp(2.9rem, 1.5rem + 4.4vw, 5.5rem);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    color: var(--color-purple-ink);
+  }
+  .sub {
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: #3f3a4c;
+    max-width: 40ch;
+    margin-bottom: 2rem;
+  }
+  .ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  /* Floating objects */
+  .objects {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .o {
+    position: absolute;
+  }
+  .o-session {
+    top: 21%;
+    right: 7%;
+  }
+  .o-note {
+    top: 41%;
+    right: 27%;
+  }
+  .note-tilt {
+    rotate: -7deg;
+  }
+  .o-reply {
+    bottom: 13%;
+    right: 5%;
+  }
+  .o-p1 {
+    bottom: 9%;
+    left: 46%;
+  }
+  .o-p2 {
+    bottom: 26%;
+    right: 3%;
+  }
+  .o-p3 {
+    bottom: 6%;
+    left: 8%;
+  }
+  .o-p1 :global(svg) {
+    rotate: 24deg;
+  }
+  .o-p2 :global(svg) {
+    rotate: -40deg;
+  }
+  .o-p3 :global(svg) {
+    rotate: 70deg;
+  }
+
+  .session {
+    width: 300px;
+    padding: 1rem 1.1rem;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.94);
+    border: 1px solid rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow-lift);
+    rotate: 5deg;
+  }
+  .s-head {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+  }
+  .avatar,
+  .r-avatar {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 0.875rem;
+  }
+  .avatar {
+    background: var(--color-lavender-mist);
+    color: var(--color-purple-deep);
+  }
+  .s-title {
+    margin: 0;
+    font-weight: 700;
+    font-size: 0.9375rem;
+    color: var(--color-ink);
+  }
+  .s-meta {
+    margin: 0;
+    font-size: 0.8125rem;
+    color: var(--color-gray-600);
+  }
+  .s-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.85rem;
+    padding-top: 0.75rem;
+    border-top: 1px dashed var(--color-gray-200);
+    font-size: 0.8125rem;
+  }
+  .s-when {
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  .s-status {
+    position: relative;
+    display: grid;
+  }
+  .st {
+    grid-area: 1 / 1;
+    justify-self: end;
+    padding: 0.2rem 0.6rem;
+    border-radius: var(--radius-pill);
+    font-weight: 700;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+  .st-1 {
+    background: var(--color-gray-100);
+    color: var(--color-gray-600);
+    animation: st-out 8s infinite;
+  }
+  .st-2 {
+    background: var(--color-purple-deep);
+    color: var(--color-white);
+    animation: st-in 8s infinite;
+  }
+  @keyframes st-out {
+    0%, 40% { opacity: 1; transform: none; }
+    48%, 92% { opacity: 0; transform: translateY(-6px); }
+    100% { opacity: 1; transform: none; }
+  }
+  @keyframes st-in {
+    0%, 40% { opacity: 0; transform: translateY(6px); }
+    48%, 92% { opacity: 1; transform: none; }
+    100% { opacity: 0; transform: translateY(6px); }
+  }
+
+  .reply {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+    width: 290px;
+    padding: 0.9rem 1rem;
+    border-radius: 18px 18px 18px 6px;
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: var(--shadow-lift);
+    rotate: -3deg;
+  }
+  .r-avatar {
+    background: var(--color-purple-deep);
+    color: var(--color-white);
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+  }
+  .r-name {
+    margin: 0;
+    font-weight: 700;
+    font-size: 0.875rem;
+    color: var(--color-ink);
+  }
+  .r-name span {
+    font-weight: 500;
+    color: var(--color-gray-600);
+  }
+  .r-text {
+    margin: 0.15rem 0 0;
+    font-size: 0.9375rem;
+    line-height: 1.45;
+    color: var(--color-ink);
+  }
+
+  /* Idle float. Paper and cards hover; petals ride the swell. */
+  .bob {
+    animation: bob 7s ease-in-out infinite;
+  }
+  .bob-b {
+    animation-duration: 8.5s;
+    animation-delay: -2s;
+  }
+  .bob-c {
+    animation-duration: 6.5s;
+    animation-delay: -4s;
+  }
+  .bob-water {
+    animation: swell 6s ease-in-out infinite;
+  }
+  .bob-water2 {
+    animation: swell 7.5s ease-in-out infinite;
+    animation-delay: -3s;
+  }
+  @keyframes bob {
+    0%, 100% { translate: 0 0; }
+    50% { translate: 0 -10px; }
+  }
+  @keyframes swell {
+    0%, 100% { translate: 0 0; rotate: 0deg; }
+    50% { translate: 6px -8px; rotate: 6deg; }
+  }
+
+  :global(.motion-ok) [data-enter],
+  :global(.motion-ok) [data-enter-obj] {
+    opacity: 0;
+  }
+
+  /* Tablet and phone: objects tuck under the copy, over the water. */
+  @media (max-width: 639px) {
+    .hero {
+      margin-top: -66px;
+    }
+  }
+  @media (max-width: 999px) {
+    .stage {
+      min-height: 0;
+      padding-bottom: 300px;
+    }
+    .o-session {
+      top: auto;
+      bottom: 150px;
+      right: auto;
+      left: 4%;
+    }
+    .o-note {
+      top: auto;
+      bottom: 40px;
+      right: 4%;
+    }
+    .o-reply {
+      display: none;
+    }
+    .o-p1 {
+      bottom: 16px;
+      left: 10%;
+    }
+    .o-p2 {
+      bottom: 230px;
+      right: 8%;
+    }
+    .o-p3 {
+      display: none;
+    }
+  }
+  @media (max-width: 560px) {
+    .stage {
+      padding-bottom: 320px;
+    }
+    .session {
+      width: 250px;
+    }
+    .o-session {
+      bottom: 150px;
+      left: 3%;
+    }
+    .o-p2 {
+      bottom: 290px;
+    }
+    .o-note {
+      right: -6%;
+      bottom: 20px;
+      scale: 0.82;
+      transform-origin: bottom right;
+    }
+  }
+</style>

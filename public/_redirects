@@ -1,0 +1,10 @@
+# Old GoDaddy Website Builder paths (301)
+/about              /about/          301
+/testimonials       /testimonials/   301
+/services           /services/       301
+/events-1           /events/         301
+/contact            /contact/        301
+/blog               /blog/           301
+/m/bookings         /contact/        301
+/m/account          /contact/        301
+/m/create-account   /contact/        301

@@ -1,0 +1,95 @@
+---
+// Blog index. Stella writes posts herself through Decap; newest first.
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import PageHero from '../../components/PageHero.astro';
+import { SITE } from '../../config';
+import { rel } from '../../lib/url';
+
+const u = Astro.url;
+const posts = (await getCollection('blog')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' });
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: 'Thoughts: The Divine ReConnection Blog',
+    url: `${SITE.url}/blog/`,
+    author: { '@type': 'Person', name: SITE.owner },
+  },
+];
+---
+
+<Base
+  title="Thoughts: The Divine ReConnection Blog"
+  description="Reflections on faith, healing and reconnection from Stella Crispo."
+  schema={schema}
+>
+  <PageHero eyebrow="Blog" title="Thoughts." intro="Reflections on faith, healing and reconnection, written by Stella." />
+
+  <section class="section" aria-label="Posts">
+    <div class="wrap">
+      <ul class="posts" data-reveal-group>
+        {
+          posts.map((p) => (
+            <li data-reveal>
+              <a class="post" href={rel(`blog/${p.id}/`, u)}>
+                <time datetime={p.data.date.toISOString().slice(0, 10)}>{fmt(p.data.date)}</time>
+                <h2>{p.data.title}</h2>
+                <p>{p.data.description}</p>
+                <span class="go">Read the post <span aria-hidden="true">→</span></span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .posts {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    display: grid;
+    gap: 1.25rem;
+    max-width: 860px;
+  }
+  .post {
+    display: grid;
+    gap: 0.5rem;
+    padding: clamp(1.75rem, 1rem + 2vw, 2.75rem);
+    border-radius: 28px;
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition:
+      transform 0.5s var(--ease-out),
+      box-shadow 0.5s var(--ease-out);
+  }
+  .post:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lift);
+    color: var(--color-ink);
+  }
+  time {
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-purple);
+  }
+  .post h2 {
+    font-size: var(--step-3);
+  }
+  .post p {
+    color: var(--color-gray-600);
+    margin: 0.25rem 0 0.75rem;
+  }
+  .go {
+    font-weight: 700;
+    color: var(--color-purple-deep);
+  }
+</style>

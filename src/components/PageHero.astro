@@ -1,0 +1,101 @@
+---
+// Inner-page hero: the same ocean stage as the home page at a shorter
+// height, so every page opens on the brand's water without repeating the
+// home hero's objects. Text always sits on the sky for contrast.
+// Slot "aside" takes one floating object that says what the page is for.
+import Ocean from './Ocean.astro';
+
+interface Props {
+  eyebrow?: string;
+  title: string;
+  intro?: string;
+}
+const { eyebrow, title, intro } = Astro.props;
+---
+
+<section class="ph" aria-labelledby="page-title">
+  <div class="ph-stage">
+    <Ocean horizon={0.2} horizonMobile={0.14} showToggle={false} />
+    <div class="ph-inner">
+      <div class="ph-copy" data-parallax="0.12">
+        {eyebrow && <p class="eyebrow ph-eyebrow" data-reveal>{eyebrow}</p>}
+        <h1 id="page-title" data-reveal>{title}</h1>
+        {intro && <p class="ph-intro" data-reveal>{intro}</p>}
+        {Astro.slots.has('actions') && <div class="ph-actions" data-reveal><slot name="actions" /></div>}
+      </div>
+      {
+        Astro.slots.has('aside') && (
+          <div class="ph-aside" aria-hidden="true" data-parallax="0.3">
+            <slot name="aside" />
+          </div>
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .ph {
+    padding: 0 var(--gutter);
+    margin-top: -76px;
+  }
+  @media (max-width: 639px) {
+    .ph {
+      margin-top: -66px;
+    }
+  }
+  .ph-stage {
+    position: relative;
+    max-width: 1360px;
+    margin-inline: auto;
+    border-radius: 32px;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .ph-inner {
+    position: relative;
+    z-index: 2;
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    min-height: clamp(520px, 66svh, 640px);
+    padding: calc(var(--header-h) + clamp(2rem, 1rem + 4vw, 4rem)) clamp(1.25rem, 0.5rem + 4vw, 4.5rem) clamp(7rem, 5rem + 6vw, 10rem);
+  }
+  @media (min-width: 960px) {
+    .ph-inner {
+      grid-template-columns: 1.4fr 1fr;
+    }
+  }
+  .ph-eyebrow {
+    background: rgba(255, 255, 255, 0.75);
+  }
+  h1 {
+    margin: 1.2rem 0 1.1rem;
+    font-size: clamp(2.6rem, 1.6rem + 3.6vw, 4.75rem);
+    line-height: 0.98;
+    color: var(--color-purple-ink);
+    max-width: 16ch;
+  }
+  .ph-intro {
+    font-size: var(--step-1);
+    line-height: 1.5;
+    color: #3f3a4c;
+    max-width: 46ch;
+  }
+  .ph-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+  .ph-aside {
+    position: relative;
+    display: grid;
+    place-items: center;
+  }
+  @media (max-width: 959px) {
+    .ph-aside {
+      display: none;
+    }
+  }
+</style>
