@@ -210,7 +210,7 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
     height: 5px;
     margin-left: -2.5px;
     border-radius: 50%;
-    background: var(--color-purple);
+    background: var(--color-rose);
   }
 
   .has-menu {
@@ -353,10 +353,64 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
     .primary {
       display: block;
     }
+    .primary > ul > li > a {
+      padding-inline: 0.55rem;
+    }
+
+    /* Masthead state at the top of the page: the logo grows so DIVINE lines
+       up with the menu row at the same height. 0.1534 is the extra space
+       below the logo that puts DIVINE (not the logo's middle) on the
+       centre line. The header's own height stays 88px so the page never
+       jumps when it tucks into the pill; the tall bar just overhangs the hero. */
+    .site-header {
+      height: 88px;
+    }
+    .bar {
+      height: calc(var(--logo-h) * 1.1534);
+      pointer-events: none;
+    }
+    .brand,
+    .primary,
+    .actions {
+      pointer-events: auto;
+    }
+    .brand img {
+      height: var(--logo-h);
+      margin-bottom: calc(var(--logo-h) * 0.1534);
+      transition:
+        height 0.45s var(--ease-out),
+        margin-bottom 0.45s var(--ease-out);
+    }
+    .site-header:global(.is-scrolled) .bar {
+      height: 66px;
+      pointer-events: auto;
+    }
+    .site-header:global(.is-scrolled) .brand img {
+      height: 48px;
+      margin-bottom: 0;
+    }
   }
   @media (min-width: 1280px) {
     .phone {
       display: inline-flex;
+    }
+    /* Masthead state: phone sits above the button so the big logo has room.
+       Back side by side once the header tucks into the pill. */
+    .actions {
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 0.15rem;
+    }
+    .phone {
+      padding-block: 0.25rem;
+    }
+    .site-header:global(.is-scrolled) .actions {
+      flex-direction: row;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .site-header:global(.is-scrolled) .phone {
+      padding-block: 0.5rem;
     }
   }
 </style>
