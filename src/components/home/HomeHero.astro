@@ -19,7 +19,7 @@ const u = Astro.url;
 
     <div class="copy" data-parallax="0.18" data-parallax-scope>
       <p class="eyebrow hero-eyebrow" data-enter>{SITE.city}, {SITE.region} · In person, by phone or remote</p>
-      <h1 id="hero-title" data-enter>Reconnect with the divine in&nbsp;you.</h1>
+      <h1 id="hero-title" data-enter>Reconnect with the <em>divine</em> in&nbsp;you.</h1>
       <p class="sub" data-enter>
         Prayer, energy healing and spiritual guidance with Stella Crispo. In person in Montclair, NJ, or from wherever you are.
       </p>
@@ -171,6 +171,10 @@ const u = Astro.url;
     letter-spacing: -0.02em;
     color: var(--color-purple-ink);
   }
+  h1 em {
+    font-style: italic;
+    color: var(--color-rose-deep);
+  }
   .sub {
     font-size: var(--step-1);
     line-height: 1.5;
@@ -257,8 +261,8 @@ const u = Astro.url;
     font-size: 0.875rem;
   }
   .avatar {
-    background: var(--color-lavender-mist);
-    color: var(--color-purple-deep);
+    background: var(--color-rose-soft);
+    color: var(--color-rose-deep);
   }
   .s-title {
     margin: 0;
