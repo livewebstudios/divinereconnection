@@ -40,8 +40,24 @@
   --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
   --section-y: clamp(5rem, 3rem + 7vw, 9.5rem);
   --header-h: 84px;
+  /* Room the top-of-page heroes leave for the header. On desktop the logo
+     is a large masthead, so this follows the logo height (see Header). */
+  --header-clear: var(--header-h);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Desktop masthead logo. Target: the word DIVINE about 33px tall, centred on
+   the menu row, which puts the whole logo at 170px. On narrower desktops it shrinks
+   just enough that logo + menu + buttons still fit on one line.
+   846px is the measured width of the menu, button column and gaps beside
+   the logo plus 16px for a scrollbar (100vw counts it); 2.33 is the logo's
+   width/height ratio (1200 / 515). Full size from about 1350px wide. */
+@media (min-width: 1100px) {
+  :root {
+    --logo-h: clamp(62px, (min(1360px, 100vw - 2 * var(--gutter)) - 26px - 846px) / 2.33, 170px);
+    --header-clear: var(--logo-h);
+  }
 }
 
 *,
