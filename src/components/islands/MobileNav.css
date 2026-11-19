@@ -98,7 +98,7 @@
   width: 100%;
 }
 
-@media (min-width: 1360px) {
+@media (min-width: 1200px) {
   .mn-toggle,
   .mn-sheet {
     display: none;
