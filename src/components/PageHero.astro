@@ -3,7 +3,10 @@
 // height, so every page opens on the brand's water without repeating the
 // home hero's objects. Text always sits on the sky for contrast.
 // Slot "aside" takes one floating object that says what the page is for.
+// Every page opens with the same Stella Crispo lockup as the home hero, at
+// the same size and position, so her name leads on every page.
 import Ocean from './Ocean.astro';
+import { rel } from '../lib/url';
 
 interface Props {
   eyebrow?: string;
@@ -11,6 +14,7 @@ interface Props {
   intro?: string;
 }
 const { eyebrow, title, intro } = Astro.props;
+const u = Astro.url;
 ---
 
 <section class="ph" aria-labelledby="page-title">
@@ -18,6 +22,10 @@ const { eyebrow, title, intro } = Astro.props;
     <Ocean horizon={0.2} horizonMobile={0.14} showToggle={false} />
     <div class="ph-inner">
       <div class="ph-copy" data-parallax="0.12">
+        <picture class="lockup" data-reveal>
+          <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-deep-purple.svg', u)} width="1212" height="207" />
+          <img src={rel('images/lockup-deep-purple.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1184" height="173" fetchpriority="high" />
+        </picture>
         {eyebrow && <p class="eyebrow ph-eyebrow" data-reveal>{eyebrow}</p>}
         <h1 id="page-title" data-reveal>{title}</h1>
         {intro && <p class="ph-intro" data-reveal>{intro}</p>}
@@ -59,7 +67,27 @@ const { eyebrow, title, intro } = Astro.props;
     gap: 2rem;
     align-items: center;
     min-height: clamp(520px, 66svh, 640px);
-    padding: calc(var(--header-clear) + clamp(2rem, 1rem + 4vw, 4rem)) clamp(1.25rem, 0.5rem + 4vw, 4.5rem) clamp(7rem, 5rem + 6vw, 10rem);
+    padding: calc(var(--header-clear) + clamp(2rem, 0.5rem + 4vw, 4.5rem)) clamp(1.25rem, 0.5rem + 4vw, 4.5rem) clamp(7rem, 5rem + 6vw, 10rem);
+  }
+  /* Copy starts at the top, so the lockup lands in the same spot as on the
+     home hero no matter how short the page's intro is. */
+  .ph-copy {
+    align-self: start;
+  }
+  /* Same lockup size and spacing as the home hero (HomeHero.astro). */
+  .lockup {
+    display: block;
+    margin-bottom: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
+  }
+  .lockup img {
+    width: clamp(320px, 42vw, 600px);
+    max-width: 100%;
+    height: auto;
+  }
+  @media (max-width: 640px) {
+    .lockup img {
+      width: min(88vw, 360px);
+    }
   }
   @media (min-width: 960px) {
     .ph-inner {
