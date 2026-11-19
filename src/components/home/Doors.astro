@@ -2,8 +2,8 @@
 // Four doors in. Each visitor (faith, healing, seeker, event host) should
 // recognise their own door in a second, so each card shows a small live
 // scene of what that door actually is, the way the reference template puts
-// working product UI inside its feature cards. Prices sit on the two cards
-// that have confirmed prices, because price is the question people ask next.
+// working product UI inside its feature cards. Prices sit on the three
+// service cards, because price is the question people ask next.
 // Every card is one whole link.
 import { rel } from '../../lib/url';
 const u = Astro.url;
@@ -33,7 +33,10 @@ const u = Astro.url;
           <p class="kicker">Prayer</p>
           <h3>Someone to pray with you.</h3>
           <p>Send a request for yourself or someone you love, and Stella prays for them personally. You can also pray together by phone.</p>
-          <span class="go">Send a prayer request <span aria-hidden="true">→</span></span>
+          <div class="foot">
+            <span class="price"><strong>Sliding scale</strong></span>
+            <span class="go">Send a prayer request <span aria-hidden="true">→</span></span>
+          </div>
         </div>
       </a>
 
@@ -81,7 +84,7 @@ const u = Astro.url;
           <h3>Honest guidance at a crossroads.</h3>
           <p>A conversation, not a performance. For decisions, relationships, or missing someone who has passed.</p>
           <div class="foot">
-            <span class="price"><strong>$90</strong> a session</span>
+            <span class="price"><strong>$85</strong> a session</span>
             <span class="go">Explore guidance <span aria-hidden="true">→</span></span>
           </div>
         </div>
@@ -175,7 +178,7 @@ const u = Astro.url;
     overflow: hidden;
     background:
       radial-gradient(80% 90% at 20% 0%, #fff 0%, transparent 60%),
-      linear-gradient(160deg, var(--color-lavender-mist), #f4f0f8 60%, #e3d9ee);
+      linear-gradient(160deg, var(--color-gray-100), #f7f6f9 60%, #e6e3ec);
     display: grid;
     place-items: center;
   }
@@ -215,7 +218,7 @@ const u = Astro.url;
   }
   .price strong {
     font-family: var(--font-display);
-    font-size: 1.75rem;
+    font-size: 1.3rem;
     color: var(--color-purple-deep);
     margin-right: 0.2rem;
   }
@@ -515,7 +518,7 @@ const u = Astro.url;
     color: var(--color-gray-600);
   }
   .t-next .t-d {
-    color: #e3d9ef;
+    color: var(--color-on-dark-muted);
   }
 
   @media (prefers-reduced-motion: reduce) {

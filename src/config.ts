@@ -10,7 +10,6 @@ export const SITE = {
   city: 'Montclair',
   region: 'NJ',
   area: 'Essex County, NJ',
-  logoAlt: 'Stella Crispo Divine ReConnection',
   ga4: 'G-XXXXXXXXXX',
 };
 

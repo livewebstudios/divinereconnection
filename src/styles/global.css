@@ -1,5 +1,7 @@
 /* Divine ReConnection: design tokens and base styles.
-   Palette from the design handoff. Lavender never carries text on a light background. */
+   Palette from the design handoff. Lavender never carries text on a light background.
+   Round 2 (Stella): light gray and white are the dominant surfaces; purple is
+   for headings, buttons, links and the footer band. Type is a step smaller. */
 
 :root {
   --color-purple-deep: #4b2e83;
@@ -15,17 +17,26 @@
   --color-gray-50: #f5f4f7;
   --color-white: #ffffff;
   --color-paper: #fdfcf9;
+  /* Text roles (round 2: every text color is a token) */
+  --color-ink-soft: #3f3a4c; /* long-form copy on gray/white */
+  --color-on-dark: #f4effa; /* text on the deep purple footer */
+  --color-on-dark-muted: #e3d9ef; /* secondary text on deep purple */
+  --color-on-dark-faint: #d9cce8; /* legal line on deep purple */
+  --color-placeholder: #6f6c78; /* form placeholders */
+  --color-error: #7a1f3d;
+  --color-field-border: #857f90; /* 3.5:1 on gray, 3.9:1 on white (WCAG 1.4.11) */
 
   --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
   --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --font-hand: 'Caveat', 'Bradley Hand', cursive;
 
+  /* Body 16px on phones, 17px on desktop. Headings about 15% smaller than round 1. */
   --step--1: clamp(0.875rem, 0.85rem + 0.1vw, 0.9375rem);
-  --step-0: clamp(1.0625rem, 1.03rem + 0.15vw, 1.125rem);
-  --step-1: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
-  --step-2: clamp(1.6rem, 1.35rem + 1vw, 2.25rem);
-  --step-3: clamp(2.1rem, 1.6rem + 2.2vw, 3.5rem);
-  --step-4: clamp(2.7rem, 1.8rem + 4vw, 5.25rem);
+  --step-0: clamp(1rem, 0.95rem + 0.2vw, 1.0625rem);
+  --step-1: clamp(1.125rem, 1.07rem + 0.25vw, 1.3125rem);
+  --step-2: clamp(1.375rem, 1.17rem + 0.85vw, 1.9rem);
+  --step-3: clamp(1.8rem, 1.38rem + 1.85vw, 3rem);
+  --step-4: clamp(2.3rem, 1.55rem + 3.4vw, 4.45rem);
 
   --radius-sm: 12px;
   --radius: 20px;
@@ -61,7 +72,7 @@ body {
   color: var(--color-ink);
   font-family: var(--font-body);
   font-size: var(--step-0);
-  line-height: 1.65;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow-x: clip;
@@ -86,8 +97,8 @@ h4 {
   font-family: var(--font-display);
   font-weight: 600;
   color: var(--color-purple-deep);
-  line-height: 1.05;
-  letter-spacing: -0.01em;
+  line-height: 1.1;
+  letter-spacing: -0.005em;
   margin: 0;
   text-wrap: balance;
 }
@@ -270,7 +281,7 @@ a:hover {
 }
 
 .btn--sm {
-  min-height: 42px;
+  min-height: 44px;
   padding: 0.55rem 1.1rem;
   font-size: 0.9375rem;
 }
@@ -285,6 +296,22 @@ a:hover {
   border-bottom: 1px solid var(--color-lavender);
   padding-bottom: 2px;
   transition: gap 0.3s var(--ease-out), border-color 0.2s;
+}
+/* Hit area: text links and small footer/header links get a 44px-tall
+   invisible touch target without changing how they look. */
+.text-link,
+.hit {
+  position: relative;
+}
+.text-link::before,
+.hit::before {
+  content: '';
+  position: absolute;
+  left: -4px;
+  right: -4px;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
 }
 .text-link:hover {
   gap: 0.65rem;

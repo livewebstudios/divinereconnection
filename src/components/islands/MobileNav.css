@@ -23,7 +23,7 @@
   height: 2px;
   border-radius: 2px;
   background: currentColor;
-  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), top 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: transform 0.35s var(--ease-out), top 0.35s var(--ease-out);
 }
 .mn-lines span:first-child {
   top: 0;
@@ -98,7 +98,7 @@
   width: 100%;
 }
 
-@media (min-width: 1100px) {
+@media (min-width: 1240px) {
   .mn-toggle,
   .mn-sheet {
     display: none;

@@ -1,7 +1,7 @@
 ---
 // A testimonial as a kept note: the same paper material as a prayer request,
 // because thanks usually arrives the same way requests do.
-import type { Testimonial } from '../data/testimonials';
+import { quoteParts, type Testimonial } from '../data/testimonials';
 interface Props {
   t: Testimonial;
   class?: string;
@@ -14,7 +14,10 @@ const { t, class: cls = '', ...rest } = Astro.props;
   <svg class="tn-mark" width="44" height="34" viewBox="0 0 44 34" aria-hidden="true">
     <path d="M0 34V20C0 8 6 1 18 0v7c-6 1-9 5-9 11h9v16H0Zm26 0V20C26 8 32 1 44 0v7c-6 1-9 5-9 11h9v16H26Z" fill="#E9E2F1"></path>
   </svg>
-  <blockquote><p>{t.quote}</p></blockquote>
+  <blockquote>
+    <p>{quoteParts(t.quote).map((part) => (part.note ? <span class="ctx">{part.text}</span> : part.text))}</p>
+    {t.context && <p class="ctx-after">{t.context}</p>}
+  </blockquote>
   <figcaption>
     <span class="tn-who">{t.name}, {t.role.toLowerCase()}</span>
     <span class="chip">{t.category}</span>
@@ -36,9 +39,8 @@ const { t, class: cls = '', ...rest } = Astro.props;
   blockquote p {
     margin: 0;
     font-family: var(--font-display);
-    font-style: italic;
     font-weight: 500;
-    font-size: clamp(1.5rem, 1.2rem + 1vw, 2rem);
+    font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem);
     line-height: 1.25;
     color: var(--color-purple-ink);
   }
@@ -50,6 +52,21 @@ const { t, class: cls = '', ...rest } = Astro.props;
     gap: 0.75rem;
     padding-top: 1rem;
     border-top: 1px dashed var(--color-gray-200);
+  }
+  .ctx,
+  .ctx-after {
+    font-family: var(--font-body);
+    font-style: italic;
+    font-weight: 400;
+    font-size: 0.6em;
+    letter-spacing: 0.01em;
+    color: var(--color-gray-600);
+  }
+  .ctx-after {
+    margin-top: 0.9rem;
+    padding-top: 0.75rem;
+    border-top: 1px dotted var(--color-gray-200);
+    font-size: 0.875rem;
   }
   .tn-who {
     font-weight: 700;

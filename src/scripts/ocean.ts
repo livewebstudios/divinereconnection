@@ -1,6 +1,6 @@
 // Soft-rendered purple ocean (WebGL). Stella asked for "purple ocean, purple
 // waves", photographic rather than drawn, gentle movement, no moon, no stars.
-// This renders calm swells under a pale lavender sky with a diffuse light,
+// This renders calm swells under a pale gray sky with a diffuse light,
 // at reduced resolution so it reads soft. It pauses off screen, on hidden tabs,
 // with the visible pause button, and stays still for reduced motion.
 // A real ocean video can replace it later: drop a <video> into .ocean.
@@ -14,9 +14,9 @@ uniform float uTime;
 uniform float uHorizon;
 uniform float uDrift;
 
-const vec3 SKY_TOP = vec3(0.953, 0.941, 0.969);
-const vec3 SKY_LOW = vec3(0.902, 0.871, 0.941);
-const vec3 HAZE    = vec3(0.820, 0.773, 0.886);
+const vec3 SKY_TOP = vec3(0.961, 0.957, 0.969);
+const vec3 SKY_LOW = vec3(0.925, 0.918, 0.941);
+const vec3 HAZE    = vec3(0.847, 0.824, 0.886);
 const vec3 DEEP    = vec3(0.165, 0.094, 0.298);
 const vec3 MID     = vec3(0.420, 0.310, 0.627);
 const vec3 GLOW    = vec3(1.0, 0.975, 1.0);

@@ -1,12 +1,12 @@
 ---
 // About. One long, readable story with subheads, beside a portrait that
 // stays in view. Her current About page is a wall of text; the fix is
-// shorter paragraphs and subheads, not more sections. Medical stories and
-// illness lists from the old page are intentionally left out.
+// shorter paragraphs and subheads, not more sections. The healing results
+// line is Stella's own wording (round 2) and always sits with the support line.
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Petal from '../components/Petal.astro';
-import { FAITH_LINE } from '../data/services';
+import { FAITH_LINE, SUPPORT_LINE } from '../data/services';
 import { SITE } from '../config';
 import { rel } from '../lib/url';
 
@@ -55,7 +55,7 @@ const schema = [
               <img src={rel(photo, u)} alt="Stella Crispo" width="900" height="1125" loading="lazy" />
             ) : (
               <div class="sig">
-                <img src={rel('images/logo-white.svg', u)} alt="" width="775" height="333" loading="lazy" />
+                <img src={rel('images/signature-white.svg', u)} alt="" width="473" height="153" loading="lazy" />
               </div>
             )
           }
@@ -80,11 +80,10 @@ const schema = [
           In 2017, after what she describes as a spiritual nudge from her father, who had passed on, Stella began studying Pranic Healing.
         </p>
         <p data-reveal>
-          Pranic Healing was founded by Master Choa Kok Sui. It works with prana, the body’s life energy, cleansing what feels heavy and
-          strengthening what feels depleted. It is no-touch and non-denominational, and it works with our spiritual essence. Today Stella
-          is a Certified Pranic Healer, with training in Advanced Pranic Healing, Pranic Psychotherapy, Pranic Crystal Healing and Pranic
-          Psychic Self-Defense.
+          Today, Stella is a Certified Pranic Healer humbled by many successful healings for conditions ranging from headaches to diabetes,
+          addictions to suicidal tendencies and several “miracle” Covid cases.
         </p>
+        <p class="note" data-reveal>{SUPPORT_LINE}</p>
 
         <h2 data-reveal>From one reading to many</h2>
         <p data-reveal>
@@ -107,7 +106,6 @@ const schema = [
           peace. She is grateful to use her gifts and training to help people on their journey, and says that helping others has become
           part of her own.
         </p>
-        <p data-reveal>Outside of this work, Stella is also a singer-songwriter.</p>
 
         <div class="next" data-reveal>
           <a class="btn" href={rel('contact/', u)}>Request a session <span class="arrow" aria-hidden="true">→</span></a>
@@ -128,7 +126,7 @@ const schema = [
   }
   .hc-k {
     font-family: var(--font-display);
-    font-size: 1.75rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: var(--color-purple-deep);
     margin: 0 0 0.25rem;
@@ -207,25 +205,33 @@ const schema = [
   .prose {
     max-width: 66ch;
   }
+  /* Every subhead in the story shares one size (Stella, round 2). */
   .prose h2 {
     font-size: var(--step-2);
+    line-height: 1.15;
     margin: 3rem 0 1rem;
   }
   .prose h2:first-child {
     margin-top: 0;
   }
   .prose p {
-    color: #3f3a4c;
+    color: var(--color-ink-soft);
   }
   .big {
     font-size: var(--step-1);
     line-height: 1.55;
   }
+  .prose .note {
+    font-size: var(--step--1);
+    color: var(--color-gray-600);
+    margin-top: -0.25rem;
+  }
   .pull {
     margin: 2.5rem 0;
     padding: 2rem;
     border-radius: 24px;
-    background: var(--color-lavender-mist);
+    background: var(--color-white);
+    border: 1px solid var(--color-gray-200);
   }
   .pull blockquote {
     margin: 0 0 0.75rem;
@@ -233,7 +239,6 @@ const schema = [
   .pull p {
     margin: 0;
     font-family: var(--font-display);
-    font-style: italic;
     font-size: var(--step-2);
     line-height: 1.25;
     color: var(--color-purple-deep) !important;
@@ -244,7 +249,6 @@ const schema = [
   }
   .faith {
     font-family: var(--font-display);
-    font-style: italic;
     font-size: var(--step-2);
     line-height: 1.25;
     color: var(--color-purple-deep) !important;

@@ -42,8 +42,9 @@ const schema = [
       <FactCard
         title="At a glance"
         rows={[
+          { k: 'Prayer', v: 'Sliding scale' },
           { k: 'Pranic Healing', v: '$65, sliding scale' },
-          { k: 'Intuitive Guidance', v: '$90' },
+          { k: 'Guidance and readings', v: '$85 a session' },
           { k: 'Where', v: 'Montclair, phone, remote' },
           { k: 'Hours', v: 'By appointment' },
         ]}
@@ -62,13 +63,9 @@ const schema = [
                 <h2>{s.name}</h2>
                 <p>{s.card}</p>
                 <span class="c-foot">
-                  {s.price ? (
-                    <span class="c-price">
-                      <strong>{s.price}</strong> {s.priceNote}
-                    </span>
-                  ) : (
-                    <span class="c-price">Price on request</span>
-                  )}
+                  <span class="c-price">
+                    <strong>{s.price}</strong> {s.priceNote}
+                  </span>
                   <span class="c-go">
                     {s.nav} <span aria-hidden="true">→</span>
                   </span>
@@ -89,7 +86,7 @@ const schema = [
         <dl class="how" data-reveal>
           <div><dt>Where</dt><dd>In person in Montclair, NJ. By phone or remotely from anywhere.</dd></div>
           <div><dt>When</dt><dd>By appointment. Stella replies to set a time that suits you.</dd></div>
-          <div><dt>Prefer to call?</dt><dd><a href={SITE.phoneHref}>{SITE.phone}</a></dd></div>
+          <div><dt>Prefer to call?</dt><dd><a class="hit" href={SITE.phoneHref}>{SITE.phone}</a></dd></div>
         </dl>
       </div>
       <div data-reveal>
@@ -165,7 +162,7 @@ const schema = [
   .c-n {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: var(--color-lavender);
     margin-bottom: 2.5rem;
   }
@@ -192,7 +189,7 @@ const schema = [
   }
   .c-price strong {
     font-family: var(--font-display);
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: var(--color-purple-deep);
   }
   .c-go {
@@ -211,7 +208,7 @@ const schema = [
   }
 
   .request {
-    background: linear-gradient(180deg, var(--color-gray-50), var(--color-lavender-mist));
+    background: linear-gradient(180deg, var(--color-gray-50), var(--color-gray-100));
   }
   .req-grid {
     display: grid;

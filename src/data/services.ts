@@ -14,8 +14,9 @@ export type Service = {
   h1: string;
   intro: string;
   card: string; // one short paragraph for overview cards
-  price?: string;
+  price: string; // shown on cards, chips and fact cards
   priceNote?: string;
+  offerPrice?: string; // numeric price for JSON-LD offers; omitted when there is no fixed figure
   forWho: string[];
   expect: { heading: string; body: string }[];
   faqs: Faq[];
@@ -25,8 +26,8 @@ export type Service = {
 export const SUPPORT_LINE =
   'Sessions are spiritual support. They work alongside the care you get from your doctor or therapist and never replace it.';
 
-export const FAITH_LINE =
-  "My faith is Christian and prayer runs through everything I do. You don't have to share my faith to work with me.";
+// Stella's own wording (2026-11-17). Used on Home and About.
+export const FAITH_LINE = 'Stella’s devotion and trust in her own divine connection is at the center of what she does.';
 
 export const services: Service[] = [
   {
@@ -36,11 +37,12 @@ export const services: Service[] = [
     door: 'faith',
     title: 'Prayer Requests: Divine ReConnection',
     description:
-      'Send a prayer request for yourself or someone you love. Stella Crispo prays personally with people of every background.',
+      'Send a prayer request for yourself or someone you love. Stella Crispo prays personally with people of every background. Sliding scale.',
     h1: 'Someone to pray with you.',
     intro:
       'When life is heavy, it helps to know someone is praying with you by name. Send a request for yourself or for someone you love, and Stella prays for them personally.',
     card: 'Someone to pray with you, or for someone you love. Send a request and Stella prays personally.',
+    price: 'Sliding scale',
     forWho: [
       'You are grieving, worried or worn down and would like someone to pray with you',
       'Someone you love is going through a hard season and you want them held in prayer',
@@ -66,8 +68,8 @@ export const services: Service[] = [
         a: 'Use the prayer request form on this page. Yes, you can ask for someone you love. Their first name is all I need.',
       },
       {
-        q: 'Do I have to be Christian to ask for prayer?',
-        a: FAITH_LINE,
+        q: 'Do I need to share your beliefs to work with you?',
+        a: 'No. People of every background work with me. My devotion and trust in my own divine connection is at the center of what I do.',
       },
     ],
     formService: 'Prayer',
@@ -86,6 +88,7 @@ export const services: Service[] = [
     card: 'A no-touch energy practice. It works in person or at a distance, and you do not need to be present in real time.',
     price: '$65',
     priceNote: 'per session, sliding scale available',
+    offerPrice: '65',
     forWho: [
       'You feel drained, stuck or carrying something heavy and want gentle support',
       'You would like healing sent to someone you love, near or far',
@@ -132,13 +135,14 @@ export const services: Service[] = [
     door: 'seeker',
     title: 'Intuitive and Psychic Guidance with Stella Crispo',
     description:
-      'Honest, caring guidance for decisions, relationships and next steps. In person, by phone or online.',
+      'Honest guidance for a decision or a relationship with Stella Crispo. $85 a session, in person, by phone or online.',
     h1: 'Guidance for where you are right now.',
     intro:
       'A conversation, not a performance. Bring the decision you keep circling, the conflict you cannot settle or the question you have not said out loud yet, and talk it through with Stella.',
     card: 'Honest, caring guidance when you are at a crossroads, facing a decision or just need to talk it through.',
-    price: '$90',
+    price: '$85',
     priceNote: 'per session',
+    offerPrice: '85',
     forWho: [
       'You are at a crossroads in work, family or a relationship',
       'You keep circling the same decision and want a clear, caring outside view',
@@ -165,7 +169,7 @@ export const services: Service[] = [
       },
       {
         q: 'What does it cost?',
-        a: 'Intuitive and Psychic Guidance is $90 per session.',
+        a: 'Intuitive and Psychic Guidance is $85 per session.',
       },
     ],
     formService: 'Intuitive and Psychic Guidance',
@@ -177,11 +181,14 @@ export const services: Service[] = [
     door: 'seeker',
     title: 'Readings with Stella Crispo, Essex County NJ',
     description:
-      'Private readings and readings for groups and events with Stella Crispo. In person in Montclair, NJ, or remotely.',
+      'Private readings and readings for groups and events with Stella Crispo. $85 a session, in person in Montclair, NJ, or remotely.',
     h1: 'Readings with Stella.',
     intro:
       'Stella’s readings combine intuition, energy, messages from loved ones and plain conversation. She reads privately, and for groups and gatherings.',
     card: 'Private readings and readings for groups, combining intuition, energy and plain conversation.',
+    price: '$85',
+    priceNote: 'per session',
+    offerPrice: '85',
     forWho: [
       'You want a private reading for a question that matters to you',
       'You would like to explore a tarot reading with someone honest',
@@ -224,11 +231,14 @@ export const services: Service[] = [
     door: 'seeker',
     title: 'Spiritual Communication and Grief: Stella Crispo',
     description:
-      'Gentle, honest sessions for people missing someone who has passed. In person, by phone or online.',
+      'Gentle, honest sessions for people missing someone who has passed. $85 a session, in person, by phone or online.',
     h1: 'When you wish you could talk to them one more time.',
     intro:
       'Grief leaves so much unsaid. In a spiritual communication session, Stella listens for messages from loved ones who have passed and shares what comes through, gently and honestly.',
     card: 'Gentle, honest sessions for people missing someone who has passed.',
+    price: '$85',
+    priceNote: 'per session',
+    offerPrice: '85',
     forWho: [
       'You are missing someone and long for a sense of connection',
       'There is something you wish you had said, or heard',

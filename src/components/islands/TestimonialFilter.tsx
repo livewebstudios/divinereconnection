@@ -1,12 +1,14 @@
 // Testimonials grouped by category. Server-rendered with "All" selected, so
-// every note is visible without JavaScript. Notes re-flow on a spring when
+// every note is visible without JavaScript (the filter buttons only work
+// once hydrated; without scripts the full grouped list simply stays shown). Notes re-flow on a spring when
 // you filter. More categories (Prayer, Readings, Events) appear on their own
 // once testimonials with those categories are added to the data file.
 import { useState } from 'react';
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from 'motion/react';
+import { quoteParts } from '../../data/testimonials';
 import './TestimonialFilter.css';
 
-type T = { quote: string; name: string; role: string; category: string };
+type T = { quote: string; name: string; role: string; category: string; context?: string };
 
 export default function TestimonialFilter({ items, categories }: { items: T[]; categories: string[] }) {
   const [active, setActive] = useState('All');
@@ -44,7 +46,18 @@ export default function TestimonialFilter({ items, categories }: { items: T[]; c
                   <path d="M0 34V20C0 8 6 1 18 0v7c-6 1-9 5-9 11h9v16H0Zm26 0V20C26 8 32 1 44 0v7c-6 1-9 5-9 11h9v16H26Z" fill="#E9E2F1" />
                 </svg>
                 <blockquote>
-                  <p>{t.quote}</p>
+                  <p>
+                    {quoteParts(t.quote).map((part, k) =>
+                      part.note ? (
+                        <span key={k} className="tf-ctx">
+                          {part.text}
+                        </span>
+                      ) : (
+                        part.text
+                      ),
+                    )}
+                  </p>
+                  {t.context && <p className="tf-ctx-after">{t.context}</p>}
                 </blockquote>
                 <figcaption>
                   <span className="tf-who">

@@ -1,10 +1,10 @@
 ---
 // Meet Stella. Trust for every door comes from the person, so this is the
-// one long-form section on the home page: who she is, the faith line that
-// tells Christians they are welcome and everyone else that they are not
-// required to share it, and the credential that answers "is she trained?".
+// one long-form section on the home page: who she is, the line about her own
+// divine connection at the center of the work, and the credential that
+// answers "is she trained?".
 // PHOTO: no real photo of Stella yet (no AI faces allowed). Until one is
-// supplied, the frame shows her signature, her own mark. Drop a photo at
+// supplied, the frame shows her lockup (name over the wordmark). Drop a photo at
 // public/images/stella-portrait.jpg and set `photo` below to use it.
 import { rel } from '../../lib/url';
 import { FAITH_LINE } from '../../data/services';
@@ -23,7 +23,10 @@ const photo: string | null = null; // e.g. 'images/stella-portrait.jpg'
             <img src={rel(photo, u)} alt="Stella Crispo" width="900" height="1125" loading="lazy" />
           ) : (
             <div class="signature">
-              <img src={rel('images/logo-white.svg', u)} alt="" width="775" height="333" loading="lazy" />
+              <picture>
+                <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-white.svg', u)} width="1146" height="207" />
+                <img src={rel('images/lockup-white.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1146" height="173" loading="lazy" />
+              </picture>
             </div>
           )
         }
@@ -101,10 +104,16 @@ const photo: string | null = null; // e.g. 'images/stella-portrait.jpg'
     height: 100%;
     display: grid;
     place-items: center;
-    padding: 18%;
+    padding: 10%;
     background:
       radial-gradient(70% 50% at 50% 0%, rgba(233, 226, 241, 0.45), transparent 70%),
       linear-gradient(180deg, #6b4fa0 0%, var(--color-purple-deep) 55%, #2e1a55 100%);
+  }
+  .signature picture,
+  .signature img {
+    display: block;
+    width: 100%;
+    height: auto;
   }
   .cred {
     position: absolute;
@@ -158,7 +167,7 @@ const photo: string | null = null; // e.g. 'images/stella-portrait.jpg'
   .cred-since span {
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: var(--color-purple-deep);
     margin-right: 0.3rem;
   }
@@ -188,7 +197,6 @@ const photo: string | null = null; // e.g. 'images/stella-portrait.jpg'
   .faith p {
     margin: 0;
     font-family: var(--font-display);
-    font-style: italic;
     font-weight: 500;
     font-size: var(--step-2);
     line-height: 1.25;

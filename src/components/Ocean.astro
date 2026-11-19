@@ -33,9 +33,9 @@ const { horizon = 0.36, horizonMobile = 0.3, showToggle = true } = Astro.props;
     inset: 0;
     background: linear-gradient(
       to bottom,
-      #f3f0f7 0%,
-      #e6def0 calc(var(--horizon) - 8%),
-      #d1c5e2 var(--horizon),
+      #f5f4f7 0%,
+      #eceaf0 calc(var(--horizon) - 8%),
+      #d8d2e2 var(--horizon),
       #8a6fb8 calc(var(--horizon) + 4%),
       #553c8a calc(var(--horizon) + 22%),
       #2a184c 100%
@@ -58,7 +58,7 @@ const { horizon = 0.36, horizonMobile = 0.3, showToggle = true } = Astro.props;
     display: inline-flex;
     align-items: center;
     gap: 0.45rem;
-    min-height: 36px;
+    min-height: 44px;
     padding: 0.4rem 0.8rem;
     border-radius: var(--radius-pill);
     border: 1px solid rgba(255, 255, 255, 0.35);
@@ -68,6 +68,10 @@ const { horizon = 0.36, horizonMobile = 0.3, showToggle = true } = Astro.props;
     letter-spacing: 0.04em;
     cursor: pointer;
     backdrop-filter: blur(8px);
+  }
+  /* ocean.ts sets [hidden] for reduced motion; display above would otherwise win */
+  .ocean-toggle[hidden] {
+    display: none;
   }
   .ocean-toggle:hover {
     background: rgba(30, 16, 58, 0.65);

@@ -22,7 +22,10 @@ const year = new Date().getFullYear();
 
     <div class="top">
       <div class="invite">
-        <img class="logo" src={rel('images/logo-white.svg', u)} alt={SITE.logoAlt} width="775" height="333" loading="lazy" />
+        <picture class="lockup">
+          <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-white.svg', u)} width="1146" height="207" />
+          <img src={rel('images/lockup-white.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1146" height="173" loading="lazy" />
+        </picture>
         <p class="headline">When you are ready, Stella is here.</p>
         <div class="ctas">
           <a class="btn btn--light" href={rel('contact/', u)}>Request a session <span class="arrow" aria-hidden="true">→</span></a>
@@ -77,9 +80,12 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="base">
-      <p>© {year} {SITE.name}. All rights reserved.</p>
+      <div class="sign">
+        <a class="wordmark hit" href={rel('', u)}><img src={rel('images/wordmark-white.svg', u)} alt="Divine ReConnection" width="1126" height="75" loading="lazy" /></a>
+        <p>© {year} {SITE.name}. All rights reserved.</p>
+      </div>
       <div class="credit">
-        <span class="footer-credit">Powered by <a href="https://livewebstudios.com" target="_blank" rel="noopener">Live Web Studios</a></span>
+        <span class="footer-credit">Powered by <a class="hit" href="https://livewebstudios.com" target="_blank" rel="noopener">Live Web Studios</a></span>
         <img class="badge" src={rel('images/verifiedsecured.png', u)} alt="Verified and secured by Live Web Studios" width="150" height="37" loading="lazy" />
       </div>
     </div>
@@ -97,7 +103,7 @@ const year = new Date().getFullYear();
     overflow: hidden;
     border-radius: var(--radius-lg);
     padding: clamp(2.5rem, 1.5rem + 4vw, 5rem) clamp(1.5rem, 1rem + 4vw, 5rem) 1.5rem;
-    color: #f4effa;
+    color: var(--color-on-dark);
     background:
       radial-gradient(120% 80% at 85% 0%, rgba(173, 147, 196, 0.35), transparent 60%),
       radial-gradient(80% 60% at 0% 100%, rgba(107, 79, 160, 0.55), transparent 70%),
@@ -124,12 +130,37 @@ const year = new Date().getFullYear();
   .top {
     position: relative;
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 3rem;
     padding-bottom: 3rem;
   }
-  .logo {
-    width: 230px;
+  .lockup {
+    display: block;
     margin-bottom: 1.75rem;
+  }
+  .lockup img {
+    width: clamp(260px, 30vw, 400px);
+    max-width: 100%;
+    height: auto;
+  }
+  .sign {
+    display: grid;
+    gap: 0.75rem;
+  }
+  .wordmark {
+    display: block;
+    width: fit-content;
+    border-radius: 6px;
+  }
+  .wordmark img {
+    width: 260px;
+    max-width: 100%;
+    height: auto;
+  }
+  @media (max-width: 640px) {
+    .wordmark img {
+      width: 200px;
+    }
   }
   .headline {
     font-family: var(--font-display);
@@ -176,7 +207,8 @@ const year = new Date().getFullYear();
     margin-bottom: 0.35rem;
   }
   .news-copy {
-    color: #e3d9ef;
+    /* Sits under the footer's lavender glow, so it takes the brighter tone */
+    color: var(--color-on-dark);
     font-size: 0.9375rem;
   }
   .news-row {
@@ -227,7 +259,7 @@ const year = new Date().getFullYear();
     padding: 2.5rem 0;
     border-top: 1px solid rgba(255, 255, 255, 0.16);
     font-size: 0.9375rem;
-    color: #e3d9ef;
+    color: var(--color-on-dark-muted);
   }
   .col p {
     margin-bottom: 0.75rem;
@@ -244,10 +276,19 @@ const year = new Date().getFullYear();
     margin: 0;
     padding: 0;
     display: grid;
-    gap: 0.5rem;
+    gap: 0;
+  }
+  /* Each footer link is a full 44px row for thumbs */
+  .col li a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .col li {
+    line-height: 1.3;
   }
   .col a {
-    color: #f4effa;
+    color: var(--color-on-dark);
     text-decoration: none;
     border-bottom: 1px solid transparent;
     transition: border-color 0.2s;
@@ -276,7 +317,7 @@ const year = new Date().getFullYear();
     padding-top: 1.5rem;
     border-top: 1px solid rgba(255, 255, 255, 0.16);
     font-size: 0.875rem;
-    color: #d9cce8;
+    color: var(--color-on-dark-faint);
   }
   .base p {
     margin: 0;
@@ -300,13 +341,24 @@ const year = new Date().getFullYear();
       align-items: end;
     }
   }
+  /* Phones: the email field gets its own full-width row above the button */
+  @media (max-width: 420px) {
+    .news-row {
+      flex-direction: column;
+      border-radius: 18px;
+    }
+    .news-row input {
+      min-height: 44px;
+    }
+  }
   @media (max-width: 959px) {
     .obj-p2 {
       display: none;
     }
+    /* Below the lockup, beside the short headline, so it never covers the logo */
     .obj-p1 {
       right: 24px;
-      top: 24px;
+      top: 150px;
     }
   }
 </style>

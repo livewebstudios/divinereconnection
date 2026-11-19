@@ -31,8 +31,8 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
 
 <header class="site-header" data-header>
   <div class="bar">
-    <a class="brand" href={rel('', u)} aria-label="Divine ReConnection home">
-      <img src={rel('images/logoRGB.png', u)} alt={SITE.logoAlt} width="1200" height="515" />
+    <a class="brand" href={rel('', u)}>
+      <img src={rel('images/wordmark-deep-purple.svg', u)} alt="Divine ReConnection" width="1126" height="75" />
     </a>
 
     <nav class="primary" aria-label="Main">
@@ -86,7 +86,7 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
         <span><span class="sr-only">Call Stella at </span>{SITE.phone}</span>
       </a>
       <a class="btn btn--sm cta" href={rel('contact/', u)}>Request a session</a>
-      <MobileNav client:media="(max-width: 1099px)" links={mobileLinks} services={mobileServices} phone={SITE.phone} phoneHref={SITE.phoneHref} cta={rel('contact/', u)} />
+      <MobileNav client:media="(max-width: 1239px)" links={mobileLinks} services={mobileServices} phone={SITE.phone} phoneHref={SITE.phoneHref} cta={rel('contact/', u)} />
     </div>
   </div>
 </header>
@@ -152,18 +152,18 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
     box-shadow: 0 12px 32px -18px rgba(46, 26, 85, 0.35);
   }
 
+  /* One-line wordmark (about 15:1). Width-driven so it never wraps; at 360px
+     it is 180px wide beside the menu toggle. */
   .brand {
     flex: none;
-    display: block;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
     border-radius: 8px;
   }
   .brand img {
-    height: 62px;
-    width: auto;
-    transition: height 0.45s var(--ease-out);
-  }
-  .site-header:global(.is-scrolled) .brand img {
-    height: 48px;
+    width: clamp(180px, 22vw, 320px);
+    height: auto;
   }
 
   .primary {
@@ -180,8 +180,10 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
     position: relative;
   }
   .primary > ul > li > a {
-    display: block;
-    padding: 0.55rem 0.7rem;
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    padding: 0 0.7rem;
     border-radius: 10px;
     font-size: 0.8125rem;
     font-weight: 600;
@@ -223,8 +225,8 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
   .menu-toggle {
     display: grid;
     place-items: center;
-    width: 26px;
-    height: 32px;
+    width: 28px;
+    height: 44px;
     border: 0;
     background: none;
     color: var(--color-purple-deep);
@@ -320,6 +322,7 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
   .phone {
     display: none;
     align-items: center;
+    min-height: 44px;
     gap: 0.45rem;
     font-weight: 600;
     font-size: 0.9375rem;
@@ -334,6 +337,7 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
   }
   .cta {
     display: none;
+    white-space: nowrap;
   }
 
   @media (min-width: 640px) {
@@ -345,16 +349,17 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
     .bar {
       height: 66px;
     }
-    .brand img {
-      height: 46px;
-    }
   }
-  @media (min-width: 1100px) {
+  /* Full nav from 1240px: below that the wordmark (22vw) and seven links
+     cannot share the bar without squeezing the wordmark under 180px. */
+  @media (min-width: 1240px) {
     .primary {
       display: block;
     }
   }
-  @media (min-width: 1280px) {
+  /* The one-line wordmark is wider than the old stacked logo, so the phone
+     joins the bar only once the nav, wordmark and button all fit. */
+  @media (min-width: 1440px) {
     .phone {
       display: inline-flex;
     }
