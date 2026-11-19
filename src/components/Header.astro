@@ -1,7 +1,7 @@
 ---
 // Sticky header. Logo left (brand first, always a way home), nav in the
-// middle, and on the right the two ways people actually start: the phone
-// (many faith-door visitors would rather call) and the request button.
+// middle, and the request button on the right. The phone lives in the mobile
+// menu and the footer so the wordmark gets the room on desktop.
 // Once you scroll it tucks into a floating pill so the content gets the room.
 import { rel, isCurrent } from '../lib/url';
 import { SITE } from '../config';
@@ -32,7 +32,7 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
 <header class="site-header" data-header>
   <div class="bar">
     <a class="brand" href={rel('', u)}>
-      <img src={rel('images/wordmark-deep-purple.svg', u)} alt="Divine ReConnection" width="1126" height="75" />
+      <img src={rel('images/logoRGB.png', u)} alt="Divine ReConnection" width="2400" height="127" />
     </a>
 
     <nav class="primary" aria-label="Main">
@@ -77,16 +77,8 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
     </nav>
 
     <div class="actions">
-      <a class="phone" href={SITE.phoneHref}>
-        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true">
-          <path
-            d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1A17 17 0 0 1 3 4c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.3 0 .7-.2 1l-2.3 2.2Z"
-            fill="currentColor"></path>
-        </svg>
-        <span><span class="sr-only">Call Stella at </span>{SITE.phone}</span>
-      </a>
       <a class="btn btn--sm cta" href={rel('contact/', u)}>Request a session</a>
-      <MobileNav client:media="(max-width: 1239px)" links={mobileLinks} services={mobileServices} phone={SITE.phone} phoneHref={SITE.phoneHref} cta={rel('contact/', u)} />
+      <MobileNav client:media="(max-width: 1359px)" links={mobileLinks} services={mobileServices} phone={SITE.phone} phoneHref={SITE.phoneHref} cta={rel('contact/', u)} />
     </div>
   </div>
 </header>
@@ -143,7 +135,7 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
       max-width 0.6s var(--ease-out);
   }
   .site-header:global(.is-scrolled) .bar {
-    max-width: 1240px;
+    max-width: 1320px;
     height: 66px;
     background: rgba(255, 255, 255, 0.93);
     backdrop-filter: blur(16px) saturate(1.4);
@@ -152,22 +144,26 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
     box-shadow: 0 12px 32px -18px rgba(46, 26, 85, 0.35);
   }
 
-  /* One-line wordmark (about 15:1). Width-driven so it never wraps; at 360px
-     it is 180px wide beside the menu toggle. */
+  /* Star wordmark (about 19:1, wide tracking). It takes whatever room the
+     nav and button leave, up to 480px, so it is as large as the bar allows
+     at every width without the bar getting taller. */
   .brand {
-    flex: none;
+    flex: 0 1 480px;
+    min-width: 0;
     display: flex;
     align-items: center;
     min-height: 44px;
     border-radius: 8px;
   }
   .brand img {
-    width: clamp(180px, 22vw, 320px);
+    width: 100%;
+    max-width: 480px;
     height: auto;
   }
 
   .primary {
     display: none;
+    flex: none;
   }
   .primary > ul {
     display: flex;
@@ -183,7 +179,7 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
     display: flex;
     align-items: center;
     min-height: 44px;
-    padding: 0 0.7rem;
+    padding: 0 0.6rem;
     border-radius: 10px;
     font-size: 0.8125rem;
     font-weight: 600;
@@ -315,25 +311,10 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
   }
 
   .actions {
+    flex: none;
     display: flex;
     align-items: center;
     gap: 0.75rem;
-  }
-  .phone {
-    display: none;
-    align-items: center;
-    min-height: 44px;
-    gap: 0.45rem;
-    font-weight: 600;
-    font-size: 0.9375rem;
-    color: var(--color-purple-deep);
-    text-decoration: none;
-    padding: 0.5rem 0.6rem;
-    border-radius: 10px;
-    white-space: nowrap;
-  }
-  .phone:hover {
-    background: var(--color-lavender-mist);
   }
   .cta {
     display: none;
@@ -350,18 +331,11 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
       height: 66px;
     }
   }
-  /* Full nav from 1240px: below that the wordmark (22vw) and seven links
-     cannot share the bar without squeezing the wordmark under 180px. */
-  @media (min-width: 1240px) {
+  /* Full nav from 1360px: below that the wordmark and seven links
+     cannot share the bar with a readable wordmark. */
+  @media (min-width: 1360px) {
     .primary {
       display: block;
-    }
-  }
-  /* The one-line wordmark is wider than the old stacked logo, so the phone
-     joins the bar only once the nav, wordmark and button all fit. */
-  @media (min-width: 1440px) {
-    .phone {
-      display: inline-flex;
     }
   }
 </style>

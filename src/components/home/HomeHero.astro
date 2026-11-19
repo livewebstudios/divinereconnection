@@ -23,8 +23,8 @@ const u = Astro.url;
           Phones get the variant with the larger script so "Stella Crispo"
           stays readable; <picture> loads only one of the two. */}
       <picture class="lockup" data-enter-lockup>
-        <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-deep-purple.svg', u)} width="1146" height="207" />
-        <img src={rel('images/lockup-deep-purple.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1146" height="173" fetchpriority="high" />
+        <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-deep-purple.svg', u)} width="1212" height="207" />
+        <img src={rel('images/lockup-deep-purple.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1184" height="173" fetchpriority="high" />
       </picture>
       <p class="eyebrow hero-eyebrow" data-enter>{SITE.city}, {SITE.region} · In person, by phone or remote</p>
       <h1 id="hero-title" data-enter>Reconnect with the <em>divine</em> in&nbsp;you.</h1>
