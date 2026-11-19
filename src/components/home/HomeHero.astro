@@ -164,7 +164,7 @@ const u = Astro.url;
     overflow: hidden;
     isolation: isolate;
     transform-origin: 50% 0;
-    padding: calc(var(--header-h) + clamp(2rem, 0.5rem + 4vw, 4.5rem)) clamp(1.25rem, 0.5rem + 4vw, 4.5rem) 3rem;
+    padding: calc(var(--header-clear) + clamp(2rem, 0.5rem + 4vw, 4.5rem)) clamp(1.25rem, 0.5rem + 4vw, 4.5rem) 3rem;
   }
 
   .copy {
@@ -199,6 +199,10 @@ const u = Astro.url;
     line-height: 1;
     letter-spacing: -0.02em;
     color: var(--color-purple-ink);
+  }
+  h1 em {
+    font-style: italic;
+    color: var(--color-rose-deep);
   }
   .sub {
     font-size: var(--step-1);
@@ -286,8 +290,8 @@ const u = Astro.url;
     font-size: 0.875rem;
   }
   .avatar {
-    background: var(--color-lavender-mist);
-    color: var(--color-purple-deep);
+    background: var(--color-rose-soft);
+    color: var(--color-rose-deep);
   }
   .s-title {
     margin: 0;

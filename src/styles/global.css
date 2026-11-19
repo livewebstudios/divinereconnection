@@ -10,6 +10,12 @@
   --color-lavender: #ad93c4;
   --color-lavender-soft: #d9cce8;
   --color-lavender-mist: #e9e2f1;
+  /* Rose quartz splash. Accents only, never a big field of color.
+     --color-rose is for fills, dots and lines; text in the accent uses
+     --color-rose-deep (passes AA on white and on lavender mist). */
+  --color-rose: #e0907e;
+  --color-rose-soft: #f8ded7;
+  --color-rose-deep: #9c4636;
   --color-ink: #2b2a30;
   --color-gray-600: #5e5c66;
   --color-gray-200: #dcdae0;
@@ -51,6 +57,8 @@
   --gutter: clamp(1rem, 0.5rem + 2.5vw, 2.5rem);
   --section-y: clamp(5rem, 3rem + 7vw, 9.5rem);
   --header-h: 84px;
+  /* Room the top-of-page heroes leave for the header. */
+  --header-clear: var(--header-h);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
 }
@@ -198,7 +206,7 @@ a:hover {
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: var(--color-purple);
+  background: var(--color-rose);
 }
 
 .lede {
