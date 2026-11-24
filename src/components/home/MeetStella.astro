@@ -3,33 +3,31 @@
 // one long-form section on the home page: who she is, the line about her own
 // divine connection at the center of the work, and the credential that
 // answers "is she trained?".
-// PHOTO: no real photo of Stella yet (no AI faces allowed). Until one is
-// supplied, the frame shows her lockup (name over the wordmark). Drop a photo at
-// public/images/stella-portrait.jpg and set `photo` below to use it.
+// Photo: Stella's own portrait (round 3) in the arch frame, with her
+// signature over a soft dark-purple scrim at the bottom left.
 import { rel } from '../../lib/url';
 import { FAITH_LINE } from '../../data/services';
 import Petal from '../Petal.astro';
+import Photo from '../Photo.astro';
 
 const u = Astro.url;
-const photo: string | null = null; // e.g. 'images/stella-portrait.jpg'
 ---
 
 <section class="section meet" aria-labelledby="meet-title" data-parallax-scope>
   <div class="wrap grid">
     <div class="visual">
       <div class="frame" data-parallax="0.08">
-        {
-          photo ? (
-            <img src={rel(photo, u)} alt="Stella Crispo" width="900" height="1125" loading="lazy" />
-          ) : (
-            <div class="signature">
-              <picture>
-                <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-white.svg', u)} width="1212" height="207" />
-                <img src={rel('images/lockup-white.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1184" height="173" loading="lazy" />
-              </picture>
-            </div>
-          )
-        }
+        <Photo
+          name="stella-portrait"
+          widths={[600, 960]}
+          width={960}
+          height={1200}
+          variant="arch"
+          sizes="(min-width: 520px) 480px, calc(100vw - 2rem)"
+          alt="Stella Crispo outdoors, looking into the distance."
+        >
+          <div class="sig-over"><img src={rel('images/signature-white.svg', u)} alt="" width="473" height="153" loading="lazy" /></div>
+        </Photo>
       </div>
       <div class="cred" data-parallax="0.22" data-reveal>
         <p class="cred-k">Certified Pranic Healer</p>
@@ -94,25 +92,18 @@ const photo: string | null = null; // e.g. 'images/stella-portrait.jpg'
     overflow: hidden;
     box-shadow: var(--shadow-lift);
   }
-  .frame > img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  /* Signature over a soft dark-purple scrim, bottom left (decorative). */
+  .sig-over {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 8% 8%;
+    background: linear-gradient(to top, rgba(46, 26, 85, 0.72) 0%, rgba(46, 26, 85, 0.35) 22%, transparent 42%);
+    pointer-events: none;
   }
-  .signature {
-    width: 100%;
-    height: 100%;
-    display: grid;
-    place-items: center;
-    padding: 10%;
-    background:
-      radial-gradient(70% 50% at 50% 0%, rgba(233, 226, 241, 0.45), transparent 70%),
-      linear-gradient(180deg, #6b4fa0 0%, var(--color-purple-deep) 55%, #2e1a55 100%);
-  }
-  .signature picture,
-  .signature img {
-    display: block;
-    width: 100%;
+  .sig-over img {
+    width: 45%;
     height: auto;
   }
   .cred {
@@ -237,9 +228,16 @@ const photo: string | null = null; // e.g. 'images/stella-portrait.jpg'
       border-left: 0;
       border-top: 1px solid var(--color-gray-200);
     }
+    /* Phones: the card tucks just under the frame (24px overlap) so it
+       never covers the signature at the bottom left of the photo. */
+    .visual {
+      padding-bottom: 0;
+    }
     .cred {
-      right: -0.5rem;
-      width: 230px;
+      position: relative;
+      right: auto;
+      width: 240px;
+      margin: -1.5rem -0.5rem 0 auto;
     }
   }
 </style>

@@ -5,6 +5,7 @@ import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import FactCard from '../components/FactCard.astro';
 import RequestForm from '../components/islands/RequestForm';
+import Photo from '../components/Photo.astro';
 import { serviceOptions } from '../data/services';
 import { SITE, FORMS } from '../config';
 import { rel } from '../lib/url';
@@ -54,6 +55,17 @@ const schema = [{ '@context': 'https://schema.org', '@type': 'ContactPage', abou
         <p class="note" data-reveal>
           Looking to send a prayer request instead? <a href={rel('services/prayer/#request', u)}>Use the prayer form</a>.
         </p>
+        <div class="c-photo" data-reveal>
+          <Photo
+            name="stella-contact"
+            widths={[720, 1200]}
+            width={1200}
+            height={960}
+            tilt={-1.5}
+            sizes="(min-width: 960px) 400px, (min-width: 540px) 480px, calc(100vw - 3rem)"
+            alt="Stella Crispo seated at a table, leaning in with a smile."
+          />
+        </div>
       </div>
       <div data-reveal>
         <RequestForm client:visible kind="session" action={FORMS.contact} services={serviceOptions} phone={SITE.phone} phoneHref={SITE.phoneHref} email={SITE.email} />
@@ -115,6 +127,10 @@ const schema = [{ '@context': 'https://schema.org', '@type': 'ContactPage', abou
   .w-email {
     font-size: 1.25rem;
     word-break: break-all;
+  }
+  .c-photo {
+    width: min(100%, 480px);
+    margin-top: 1.5rem;
   }
   .note {
     margin-top: 0.5rem;

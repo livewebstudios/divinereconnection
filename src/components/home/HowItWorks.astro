@@ -4,6 +4,7 @@
 // The heading stays pinned while three steps scroll past; a rail fills as you
 // read, the scroll-linked storytelling the reference template uses.
 import { rel } from '../../lib/url';
+import Photo from '../Photo.astro';
 const u = Astro.url;
 ---
 
@@ -37,7 +38,7 @@ const u = Astro.url;
         <span class="num" aria-hidden="true">2</span>
         <div class="card">
           <div class="obj obj-reply" aria-hidden="true">
-            <span class="r-av">S</span>
+            <span class="r-av"><Photo name="stella-avatar" widths={[96, 192]} width={192} height={192} variant="avatar" hue={false} sizes="42px" alt="" /></span>
             <div class="r-b">
               <p class="r-n">Stella</p>
               <p>Thank you for writing, Jen. I’d be glad to work with you. Could we talk Thursday evening?</p>
@@ -252,11 +253,8 @@ const u = Astro.url;
     width: 42px;
     height: 42px;
     border-radius: 50%;
-    background: var(--color-purple-deep);
-    color: var(--color-white);
-    font-family: var(--font-display);
-    font-size: 1.25rem;
-    font-weight: 600;
+    overflow: hidden;
+    box-shadow: 0 0 0 2px var(--color-white), 0 0 0 3px var(--color-lavender-soft);
   }
   .r-b {
     padding: 0.85rem 1rem;

@@ -9,6 +9,7 @@ import FactCard from '../../components/FactCard.astro';
 import Faq from '../../components/Faq.astro';
 import Petal from '../../components/Petal.astro';
 import TestimonialNote from '../../components/TestimonialNote.astro';
+import Photo from '../../components/Photo.astro';
 import { testimonials } from '../../data/testimonials';
 import RequestForm from '../../components/islands/RequestForm';
 import { services, serviceOptions, SUPPORT_LINE, type Service } from '../../data/services';
@@ -101,6 +102,17 @@ const others = services.filter((o) => o.slug !== s.slug && o.door === s.door);
             </blockquote>
           )
         }
+        <div class="fit-photo" data-reveal>
+          <Photo
+            name={s.photo}
+            widths={[480, 800]}
+            width={800}
+            height={1000}
+            tilt={-2}
+            sizes="(min-width: 400px) 320px, calc(100vw - 4rem)"
+            alt={s.photoAlt}
+          />
+        </div>
       </div>
 
       <div class="expect">
@@ -231,10 +243,9 @@ const others = services.filter((o) => o.slug !== s.slug && o.door === s.door);
       grid-template-columns: 0.9fr 1.1fr;
       align-items: start;
     }
-    .fit-who {
-      position: sticky;
-      top: calc(var(--header-h) + 3rem);
-    }
+    /* Round 3: with Stella's photo under the checklist this column is
+       taller than a 720px screen, so it scrolls with the page instead of
+       sticking (a sticky column that tall would be cut off). */
     .ask-grid {
       grid-template-columns: 0.85fr 1.15fr;
       align-items: start;
@@ -242,6 +253,11 @@ const others = services.filter((o) => o.slug !== s.slug && o.door === s.door);
   }
   .fit-who h2 {
     margin-bottom: 1rem;
+  }
+  /* Stella's photo for this service, a paper print under the checklist */
+  .fit-photo {
+    width: min(100%, 340px);
+    margin-top: 2.5rem;
   }
   .fit-who .lede {
     margin-bottom: 2rem;

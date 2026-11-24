@@ -6,12 +6,12 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Petal from '../components/Petal.astro';
+import Photo from '../components/Photo.astro';
 import { FAITH_LINE, SUPPORT_LINE } from '../data/services';
 import { SITE } from '../config';
 import { rel } from '../lib/url';
 
 const u = Astro.url;
-const photo: string | null = null; // real photo only, e.g. 'images/stella-about.jpg'
 const schema = [
   {
     '@context': 'https://schema.org',
@@ -20,6 +20,7 @@ const schema = [
       '@type': 'Person',
       name: SITE.owner,
       jobTitle: 'Certified Pranic Healer',
+      image: `${SITE.url}/images/photos/stella-portrait-square-1200.jpg`,
       worksFor: { '@id': `${SITE.url}/#business` },
       address: { '@type': 'PostalAddress', addressLocality: SITE.city, addressRegion: SITE.region },
     },
@@ -50,15 +51,17 @@ const schema = [
     <div class="wrap grid">
       <aside class="side">
         <div class="frame" data-parallax="0.06">
-          {
-            photo ? (
-              <img src={rel(photo, u)} alt="Stella Crispo" width="900" height="1125" loading="lazy" />
-            ) : (
-              <div class="sig">
-                <img src={rel('images/signature-white.svg', u)} alt="" width="473" height="153" loading="lazy" />
-              </div>
-            )
-          }
+          <Photo
+            name="stella-about"
+            widths={[560, 840]}
+            width={840}
+            height={1050}
+            variant="arch"
+            sizes="(min-width: 960px) min(420px, 30vw), (min-width: 452px) 420px, calc(100vw - 2rem)"
+            alt="Stella Crispo resting her chin on her hand."
+          >
+            <div class="sig-over"><img src={rel('images/signature-white.svg', u)} alt="" width="473" height="153" loading="lazy" /></div>
+          </Photo>
         </div>
         <ul class="creds" aria-label="Training">
           <li>Advanced Pranic Healing</li>
@@ -154,6 +157,10 @@ const schema = [
       gap: clamp(3rem, 7vw, 8rem);
       align-items: start;
     }
+  }
+  /* Portrait plus training list is about 700px tall: it only sticks on
+     screens tall enough to show all of it (never cut off at 1280 x 720). */
+  @media (min-width: 960px) and (min-height: 880px) {
     .side {
       position: sticky;
       top: calc(var(--header-h) + 2.5rem);
@@ -168,17 +175,19 @@ const schema = [
     overflow: hidden;
     box-shadow: var(--shadow-lift);
   }
-  .frame > img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  /* Signature over a soft dark-purple scrim, bottom left (decorative). */
+  .sig-over {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: 0 8% 8%;
+    background: linear-gradient(to top, rgba(46, 26, 85, 0.72) 0%, rgba(46, 26, 85, 0.35) 22%, transparent 42%);
+    pointer-events: none;
   }
-  .sig {
-    height: 100%;
-    display: grid;
-    place-items: center;
-    padding: 18%;
-    background: linear-gradient(180deg, #6b4fa0, var(--color-purple-deep) 55%, #2e1a55);
+  .sig-over img {
+    width: 45%;
+    height: auto;
   }
   .creds {
     list-style: none;

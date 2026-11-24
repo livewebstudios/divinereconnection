@@ -5,6 +5,7 @@
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import RequestForm from '../components/islands/RequestForm';
+import Photo from '../components/Photo.astro';
 import { events, podcasts } from '../data/events';
 import { SITE, FORMS } from '../config';
 
@@ -131,6 +132,17 @@ const schema = upcoming.map((e) => ({
           <li><strong>Groups and meetups</strong><span>A talk, a group reading or both</span></li>
           <li><strong>Podcasts</strong><span>A guest conversation about faith, healing and intuition</span></li>
         </ul>
+        <div class="ev-photo" data-reveal>
+          <Photo
+            name="stella-events"
+            widths={[480, 800]}
+            width={800}
+            height={1000}
+            tilt={1.5}
+            sizes="(min-width: 360px) 300px, calc(100vw - 4rem)"
+            alt="Stella Crispo smiling in a bright patterned top."
+          />
+        </div>
       </div>
       <div data-reveal>
         <RequestForm client:visible kind="event" action={FORMS.event} phone={SITE.phone} phoneHref={SITE.phoneHref} email={SITE.email} />
@@ -366,6 +378,10 @@ const schema = upcoming.map((e) => ({
     border-radius: 18px;
     background: var(--color-white);
     border: 1px solid var(--color-gray-200);
+  }
+  .ev-photo {
+    width: min(100%, 320px);
+    margin-top: 2.5rem;
   }
   .kinds strong {
     color: var(--color-purple-deep);

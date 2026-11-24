@@ -21,6 +21,8 @@ export type Service = {
   expect: { heading: string; body: string }[];
   faqs: Faq[];
   formService: string; // preselected value in the request form
+  photo: string; // base name in public/images/photos/ (480 and 800 wide, 4:5)
+  photoAlt: string;
 };
 
 export const SUPPORT_LINE =
@@ -73,6 +75,8 @@ export const services: Service[] = [
       },
     ],
     formService: 'Prayer',
+    photo: 'stella-prayer',
+    photoAlt: 'Stella Crispo looking up at the sky in afternoon light.',
   },
   {
     slug: 'pranic-healing',
@@ -127,6 +131,8 @@ export const services: Service[] = [
       },
     ],
     formService: 'Pranic Healing',
+    photo: 'stella-healing',
+    photoAlt: 'Stella Crispo outdoors with rays of sunlight across the frame.',
   },
   {
     slug: 'spiritual-guidance',
@@ -173,6 +179,8 @@ export const services: Service[] = [
       },
     ],
     formService: 'Intuitive and Psychic Guidance',
+    photo: 'stella-guidance',
+    photoAlt: 'Stella Crispo with a soft smile.',
   },
   {
     slug: 'readings',
@@ -223,6 +231,8 @@ export const services: Service[] = [
       },
     ],
     formService: 'Readings',
+    photo: 'stella-readings',
+    photoAlt: 'Stella Crispo with a quiet smile.',
   },
   {
     slug: 'spiritual-communication',
@@ -269,6 +279,8 @@ export const services: Service[] = [
       },
     ],
     formService: 'Spiritual Communication',
+    photo: 'sunset-tall',
+    photoAlt: 'Sunset over the water.',
   },
 ];
 

@@ -1,0 +1,162 @@
+---
+// One of Stella's real photos (round 3). Files are already cropped and
+// compressed in public/images/photos/ as <name>-<width>.jpg and .webp, so
+// this writes the <picture> by hand: every URL in every srcset goes through
+// rel(), which Astro's image pipeline would not do.
+//
+// Variants keep photos from ten different phone moments reading as one set:
+//   arch      the portrait frame (4:5, rounded top), for the two main portraits
+//   snapshot  a paper print, the same material as the prayer and testimonial notes
+//   avatar    a circle
+// hue adds Stella's light violet cast in CSS (never baked into the files).
+// Turn it off where violet turns the colors to mud (sunflowers) and on avatars.
+// The default slot sits inside the image area, for overlays like the signature.
+import { rel } from '../lib/url';
+
+interface Props {
+  name: string;
+  widths: number[];
+  width: number; // pixel size of the largest file, for the width/height attributes
+  height: number;
+  alt: string;
+  sizes: string;
+  variant?: 'arch' | 'snapshot' | 'avatar';
+  hue?: boolean;
+  tilt?: -2 | -1.5 | 1.5 | 2; // snapshot only
+  eager?: boolean;
+  class?: string;
+}
+
+const {
+  name,
+  widths,
+  width,
+  height,
+  alt,
+  sizes,
+  variant = 'snapshot',
+  hue = true,
+  tilt,
+  eager = false,
+  class: cls = '',
+} = Astro.props;
+const u = Astro.url;
+const ws = [...widths].sort((a, b) => a - b);
+const set = (ext: string) => ws.map((w) => `${rel(`images/photos/${name}-${w}.${ext}`, u)} ${w}w`).join(', ');
+const largest = ws[ws.length - 1];
+---
+
+<div class={`photo photo--${variant} ${cls}`} data-tilt={variant === 'snapshot' && tilt ? String(tilt) : undefined}>
+  <div class:list={['photo-img', { 'has-hue': hue }]}>
+    <picture>
+      <source type="image/webp" srcset={set('webp')} sizes={sizes} />
+      <img
+        src={rel(`images/photos/${name}-${largest}.jpg`, u)}
+        srcset={set('jpg')}
+        sizes={sizes}
+        width={width}
+        height={height}
+        alt={alt}
+        loading={eager ? 'eager' : 'lazy'}
+        decoding={eager ? 'auto' : 'async'}
+        fetchpriority={eager ? 'high' : undefined}
+      />
+    </picture>
+    <slot />
+  </div>
+</div>
+
+<style>
+  .photo {
+    position: relative;
+  }
+  .photo-img {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .photo picture,
+  .photo img {
+    display: block;
+    width: 100%;
+  }
+  .photo img {
+    height: auto;
+  }
+
+  /* Purple hue: soft-light lifts the violet into the mid-tones, a faint
+     color layer ties skin and sky to the same family. Tested on her photos:
+     skin still reads as skin. */
+  .has-hue::before,
+  .has-hue::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: var(--color-purple);
+  }
+  .has-hue::before {
+    mix-blend-mode: soft-light;
+    opacity: 0.4;
+  }
+  .has-hue::after {
+    mix-blend-mode: color;
+    opacity: 0.12;
+  }
+  /* Overlays passed in the slot sit above the hue */
+  .photo-img > :global(:not(picture)) {
+    z-index: 2;
+  }
+
+  /* arch: fills its parent frame shape */
+  .photo--arch,
+  .photo--arch .photo-img {
+    height: 100%;
+  }
+  .photo--arch .photo-img {
+    border-radius: 200px 200px 28px 28px;
+    box-shadow: var(--shadow-lift);
+  }
+  .photo--arch picture,
+  .photo--arch img {
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* snapshot: a paper print with a white border */
+  .photo--snapshot {
+    padding: 10px;
+    background: var(--color-white);
+    border-radius: 6px;
+    box-shadow: var(--shadow-paper);
+  }
+  .photo--snapshot .photo-img {
+    border-radius: 3px;
+  }
+  .photo--snapshot[data-tilt='-2'] {
+    rotate: -2deg;
+  }
+  .photo--snapshot[data-tilt='-1.5'] {
+    rotate: -1.5deg;
+  }
+  .photo--snapshot[data-tilt='1.5'] {
+    rotate: 1.5deg;
+  }
+  .photo--snapshot[data-tilt='2'] {
+    rotate: 2deg;
+  }
+
+  /* avatar: a circle; the parent sets the size */
+  .photo--avatar,
+  .photo--avatar .photo-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+  }
+  .photo--avatar picture,
+  .photo--avatar img {
+    height: 100%;
+    object-fit: cover;
+  }
+</style>
