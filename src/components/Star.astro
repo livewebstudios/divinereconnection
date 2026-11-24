@@ -30,15 +30,15 @@ const px = Math.min(size, 28);
   }
   .star--lavender {
     fill: var(--color-lavender);
-    filter: drop-shadow(0 0 4px rgba(173, 147, 196, 0.55));
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-lavender) 55%, transparent));
   }
   .star--rose {
     fill: var(--color-rose);
-    filter: drop-shadow(0 0 4px rgba(224, 144, 126, 0.5));
+    filter: drop-shadow(0 0 4px color-mix(in srgb, var(--color-rose) 50%, transparent));
   }
   .star--white {
     fill: var(--color-white);
-    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
+    filter: drop-shadow(0 0 6px color-mix(in srgb, var(--color-white) 70%, transparent));
   }
   .tw-1 {
     animation-duration: 4.2s;

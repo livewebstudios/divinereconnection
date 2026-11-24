@@ -61,6 +61,15 @@
   --header-clear: var(--header-h);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Round 3: soft dark-purple scrim under Stella's signature on her
+     portraits (Home and About), built from the ink token. */
+  --scrim-signature: linear-gradient(
+    to top,
+    color-mix(in srgb, var(--color-purple-ink) 72%, transparent) 0%,
+    color-mix(in srgb, var(--color-purple-ink) 35%, transparent) 22%,
+    transparent 42%
+  );
 }
 
 *,
