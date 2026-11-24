@@ -1,0 +1,83 @@
+---
+// A four-point star with concave sides, the same star as the one between
+// the words in the header wordmark (Stella's logo). Round 3: stars join the
+// petals as the second floating motif (Stella, 11-23).
+// Twinkle is CSS only: each star gets one of six timings in turn, with
+// different lengths, so no two pulse together. Drift comes from the
+// parent's data-parallax. Reduced motion: still and fully visible.
+interface Props {
+  size?: number; // px, 28 at most
+  tone?: 'lavender' | 'rose' | 'white';
+  class?: string;
+}
+const { size = 16, tone = 'lavender', class: cls = '' } = Astro.props;
+const g = globalThis as { __drStar?: number };
+g.__drStar = (g.__drStar ?? 0) + 1;
+const timing = (g.__drStar % 6) + 1;
+const px = Math.min(size, 28);
+---
+
+<svg class={`star star--${tone} tw-${timing} ${cls}`} width={px} height={px} viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+  <path d="M50 0Q57 43 100 50Q57 57 50 100Q43 57 0 50Q43 43 50 0Z"></path>
+</svg>
+
+<style>
+  .star {
+    display: block;
+    overflow: visible;
+    pointer-events: none;
+    animation: twinkle 5s ease-in-out infinite;
+  }
+  .star--lavender {
+    fill: var(--color-lavender);
+    filter: drop-shadow(0 0 4px rgba(173, 147, 196, 0.55));
+  }
+  .star--rose {
+    fill: var(--color-rose);
+    filter: drop-shadow(0 0 4px rgba(224, 144, 126, 0.5));
+  }
+  .star--white {
+    fill: var(--color-white);
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.7));
+  }
+  .tw-1 {
+    animation-duration: 4.2s;
+    animation-delay: -0.6s;
+  }
+  .tw-2 {
+    animation-duration: 5.3s;
+    animation-delay: -2.4s;
+  }
+  .tw-3 {
+    animation-duration: 6.4s;
+    animation-delay: -4.1s;
+  }
+  .tw-4 {
+    animation-duration: 4.7s;
+    animation-delay: -1.7s;
+  }
+  .tw-5 {
+    animation-duration: 5.9s;
+    animation-delay: -3.3s;
+  }
+  .tw-6 {
+    animation-duration: 6.9s;
+    animation-delay: -5.2s;
+  }
+  @keyframes twinkle {
+    0%,
+    100% {
+      opacity: 0.45;
+      scale: 0.78;
+    }
+    50% {
+      opacity: 1;
+      scale: 1;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .star {
+      animation: none;
+    }
+  }
+</style>
