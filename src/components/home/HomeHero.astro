@@ -28,14 +28,8 @@ const u = Astro.url;
     </div>
 
     <div class="copy" data-parallax="0.18" data-parallax-scope>
-      {/* The lockup introduces the page: Stella's name, then what she offers.
-          Deep purple on the pale sky (contrast check in SESSION_SUMMARY.md).
-          Phones get the variant with the larger script so "Stella Crispo"
-          stays readable; <picture> loads only one of the two. */}
-      <picture class="lockup" data-enter-lockup>
-        <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-deep-purple.svg', u)} width="1055" height="207" />
-        <img src={rel('images/lockup-deep-purple.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1027" height="173" fetchpriority="high" />
-      </picture>
+      {/* No lockup here (Jon, 11-24): it sat too close to the header
+          wordmark. The header carries the name; the H1 leads the hero. */}
       <p class="eyebrow hero-eyebrow" data-enter>{SITE.city}, {SITE.region} · In person, by phone or remote</p>
       <h1 id="hero-title" data-enter>Reconnect with the <em>divine</em> in&nbsp;you.</h1>
       <p class="sub" data-enter>
@@ -104,14 +98,7 @@ const u = Astro.url;
   const stage = document.querySelector<HTMLElement>('[data-hero-stage]');
 
   if (hero && stage && !reduce) {
-    // Entrance: the lockup arrives first (about 150ms ahead), then the copy
-    // rises in order, then the objects settle in from a turn.
-    animate('[data-enter-lockup]', { opacity: [0, 1], transform: ['translateY(16px)', 'translateY(0px)'] }, {
-      type: 'spring',
-      stiffness: 80,
-      damping: 20,
-      delay: 0.15,
-    });
+    // Entrance: the copy rises in order, then the objects settle in from a turn.
     animate('[data-enter]', { opacity: [0, 1], transform: ['translateY(28px)', 'translateY(0px)'] }, {
       type: 'spring',
       stiffness: 80,
@@ -182,22 +169,6 @@ const u = Astro.url;
     z-index: 3;
     max-width: 760px;
   }
-  .lockup {
-    display: block;
-    margin-bottom: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
-  }
-  /* Round 3 small caps made the lockup narrower: widths are 0.867 of
-     round 2's so the letters stay the same height. */
-  .lockup img {
-    width: clamp(278px, 36.4vw, 520px);
-    max-width: 100%;
-    height: auto;
-  }
-  @media (max-width: 640px) {
-    .lockup img {
-      width: min(76.5vw, 313px);
-    }
-  }
   .hero-eyebrow {
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(6px);
@@ -260,6 +231,12 @@ const u = Astro.url;
   .s5 {
     top: 31%;
     right: 44%;
+  }
+  /* From 1000 to 1199px the subhead runs under this spot */
+  @media (max-width: 1199px) {
+    .s5 {
+      display: none;
+    }
   }
 
   /* Floating objects */
@@ -461,7 +438,6 @@ const u = Astro.url;
     font-weight: 500;
   }
 
-  :global(.motion-ok) [data-enter-lockup],
   :global(.motion-ok) [data-enter],
   :global(.motion-ok) [data-enter-obj] {
     opacity: 0;

@@ -3,11 +3,10 @@
 // height, so every page opens on the brand's water without repeating the
 // home hero's objects. Text always sits on the sky for contrast.
 // Slot "aside" takes one floating object that says what the page is for.
-// Every page opens with the same Stella Crispo lockup as the home hero, at
-// the same size and position, so her name leads on every page.
+// No lockup in the hero (Jon, 11-24): it sat too close to the header
+// wordmark, which already carries the name.
 import Ocean from './Ocean.astro';
 import Star from './Star.astro';
-import { rel } from '../lib/url';
 
 interface Props {
   eyebrow?: string;
@@ -15,7 +14,6 @@ interface Props {
   intro?: string;
 }
 const { eyebrow, title, intro } = Astro.props;
-const u = Astro.url;
 ---
 
 <section class="ph" aria-labelledby="page-title">
@@ -29,10 +27,6 @@ const u = Astro.url;
     </div>
     <div class="ph-inner">
       <div class="ph-copy" data-parallax="0.12">
-        <picture class="lockup" data-reveal>
-          <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-deep-purple.svg', u)} width="1055" height="207" />
-          <img src={rel('images/lockup-deep-purple.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1027" height="173" fetchpriority="high" />
-        </picture>
         {eyebrow && <p class="eyebrow ph-eyebrow" data-reveal>{eyebrow}</p>}
         <h1 id="page-title" data-reveal>{title}</h1>
         {intro && <p class="ph-intro" data-reveal>{intro}</p>}
@@ -127,28 +121,6 @@ const u = Astro.url;
     align-items: center;
     min-height: clamp(520px, 66svh, 640px);
     padding: calc(var(--header-clear) + clamp(2rem, 0.5rem + 4vw, 4.5rem)) clamp(1.25rem, 0.5rem + 4vw, 4.5rem) clamp(7rem, 5rem + 6vw, 10rem);
-  }
-  /* Copy starts at the top, so the lockup lands in the same spot as on the
-     home hero no matter how short the page's intro is. */
-  .ph-copy {
-    align-self: start;
-  }
-  /* Same lockup size and spacing as the home hero (HomeHero.astro). */
-  .lockup {
-    display: block;
-    margin-bottom: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
-  }
-  /* Round 3 small caps made the lockup narrower: widths are 0.867 of
-     round 2's so the letters stay the same height. */
-  .lockup img {
-    width: clamp(278px, 36.4vw, 520px);
-    max-width: 100%;
-    height: auto;
-  }
-  @media (max-width: 640px) {
-    .lockup img {
-      width: min(76.5vw, 313px);
-    }
   }
   @media (min-width: 960px) {
     .ph-inner {
