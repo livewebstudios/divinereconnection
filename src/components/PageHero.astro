@@ -6,6 +6,7 @@
 // Every page opens with the same Stella Crispo lockup as the home hero, at
 // the same size and position, so her name leads on every page.
 import Ocean from './Ocean.astro';
+import Star from './Star.astro';
 import { rel } from '../lib/url';
 
 interface Props {
@@ -20,6 +21,12 @@ const u = Astro.url;
 <section class="ph" aria-labelledby="page-title">
   <div class="ph-stage">
     <Ocean horizon={0.2} horizonMobile={0.14} showToggle={false} />
+    <div class="stars" aria-hidden="true" data-parallax="0.1">
+      <span class="s1"><Star tone="lavender" size={20} /></span>
+      <span class="s2"><Star tone="rose" size={12} /></span>
+      <span class="s3"><Star tone="lavender" size={14} /></span>
+      <span class="s4"><Star tone="rose" size={16} /></span>
+    </div>
     <div class="ph-inner">
       <div class="ph-copy" data-parallax="0.12">
         <picture class="lockup" data-reveal>
@@ -59,6 +66,58 @@ const u = Astro.url;
     border-radius: 32px;
     overflow: hidden;
     isolation: isolate;
+  }
+
+  /* Stars in the sky (round 3). Never over text or a control; checked at
+     360 to 1920. Behind the copy and the floating objects. */
+  .stars {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+  }
+  .stars > span {
+    position: absolute;
+  }
+  .s1 {
+    top: 18%;
+    right: 6%;
+  }
+  .s2 {
+    top: 13%;
+    right: 24%;
+  }
+  .s3 {
+    top: 24%;
+    right: 40%;
+  }
+  .s4 {
+    bottom: 26%;
+    right: 8%;
+  }
+  /* Below 960px the copy fills the width: stars sit in the strip of sky
+     between the last line of copy and the water. */
+  @media (max-width: 959px) {
+    .s1,
+    .s2,
+    .s3 {
+      top: auto;
+    }
+    .s1 {
+      bottom: clamp(4.25rem, 3rem + 3vw, 6rem);
+      right: 12%;
+    }
+    .s2 {
+      bottom: clamp(5.25rem, 4rem + 3vw, 7rem);
+      right: 34%;
+    }
+    .s3 {
+      bottom: clamp(4rem, 3rem + 3vw, 5.75rem);
+      right: 58%;
+    }
+    .s4 {
+      display: none;
+    }
   }
   .ph-inner {
     position: relative;

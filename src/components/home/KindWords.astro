@@ -4,6 +4,7 @@
 // room to be read. Only non-medical testimonials appear on the home page.
 import TestimonialNote from '../TestimonialNote.astro';
 import Petal from '../Petal.astro';
+import Star from '../Star.astro';
 import { testimonials } from '../../data/testimonials';
 import { rel } from '../../lib/url';
 const u = Astro.url;
@@ -27,6 +28,8 @@ const picks = testimonials.filter((t) => t.home);
       }
       <div class="pa" data-parallax="0.4" data-parallax-rotate="60" aria-hidden="true"><Petal tone="blush" size={60} /></div>
       <div class="pb" data-parallax="0.28" data-parallax-rotate="-40" aria-hidden="true"><Petal tone="deep" size={38} /></div>
+      <div class="sa" data-parallax="0.34" aria-hidden="true"><Star tone="rose" size={14} /></div>
+      <div class="sb" data-parallax="0.22" aria-hidden="true"><Star tone="lavender" size={20} /></div>
     </div>
 
     <p class="more" data-reveal>
@@ -69,6 +72,32 @@ const picks = testimonials.filter((t) => t.home);
     position: absolute;
     right: -1rem;
     bottom: -1rem;
+  }
+  .sa,
+  .sb {
+    position: absolute;
+    pointer-events: none;
+  }
+  .sa {
+    left: 53%;
+    top: -2.75rem;
+  }
+  .sb {
+    right: -0.5rem;
+    bottom: 3rem;
+  }
+  /* Phones: the notes stack, so the pair moves below them, beside the
+     petal, clear of the heading. */
+  @media (max-width: 819px) {
+    .sa {
+      top: auto;
+      left: 1rem;
+      bottom: -2.5rem;
+    }
+    .sb {
+      right: 3.5rem;
+      bottom: -2.25rem;
+    }
   }
   .more {
     text-align: center;

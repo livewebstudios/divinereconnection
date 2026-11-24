@@ -8,6 +8,7 @@ import { rel } from '../lib/url';
 import { SITE, FORMS } from '../config';
 import { services } from '../data/services';
 import Petal from './Petal.astro';
+import Star from './Star.astro';
 
 const u = Astro.url;
 const year = new Date().getFullYear();
@@ -18,6 +19,8 @@ const year = new Date().getFullYear();
     <div class="objects" aria-hidden="true">
       <div class="obj obj-p1" data-parallax="0.3" data-parallax-rotate="40"><Petal tone="blush" size={64} /></div>
       <div class="obj obj-p2" data-parallax="0.2" data-parallax-rotate="-30"><Petal tone="lavender" size={44} /></div>
+      <div class="obj obj-s1" data-parallax="0.26"><Star tone="white" size={16} /></div>
+      <div class="obj obj-s2" data-parallax="0.36"><Star tone="lavender" size={12} /></div>
     </div>
 
     <div class="top">
@@ -125,6 +128,14 @@ const year = new Date().getFullYear();
   .obj-p2 {
     right: 42%;
     top: 90px;
+  }
+  .obj-s1 {
+    right: 18%;
+    top: 30px;
+  }
+  .obj-s2 {
+    right: 36%;
+    top: 58px;
   }
 
   .top {
@@ -359,6 +370,13 @@ const year = new Date().getFullYear();
     .obj-p1 {
       right: 24px;
       top: 150px;
+    }
+    .obj-s1 {
+      right: 72px;
+      top: 128px;
+    }
+    .obj-s2 {
+      display: none;
     }
   }
 </style>

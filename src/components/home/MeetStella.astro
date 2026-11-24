@@ -9,6 +9,7 @@ import { rel } from '../../lib/url';
 import { FAITH_LINE } from '../../data/services';
 import Petal from '../Petal.astro';
 import Photo from '../Photo.astro';
+import Star from '../Star.astro';
 
 const u = Astro.url;
 ---
@@ -40,6 +41,8 @@ const u = Astro.url;
         <p class="cred-since"><span>2017</span> began her training</p>
       </div>
       <div class="petal-a" data-parallax="0.35" data-parallax-rotate="50" aria-hidden="true"><Petal tone="lavender" size={56} /></div>
+      <div class="star-a" data-parallax="0.28" aria-hidden="true"><Star tone="lavender" size={20} /></div>
+      <div class="star-b" data-parallax="0.42" aria-hidden="true"><Star tone="rose" size={12} /></div>
     </div>
 
     <div class="text" data-reveal-group>
@@ -166,6 +169,28 @@ const u = Astro.url;
     position: absolute;
     left: -1.5rem;
     top: 18%;
+  }
+  .star-a,
+  .star-b {
+    position: absolute;
+    pointer-events: none;
+  }
+  .star-a {
+    left: -1.25rem;
+    top: 5%;
+  }
+  .star-b {
+    left: -0.5rem;
+    top: 34%;
+  }
+  @media (max-width: 560px) {
+    .star-a {
+      left: -0.25rem;
+      top: 2%;
+    }
+    .star-b {
+      display: none;
+    }
   }
 
   .text h2 {
