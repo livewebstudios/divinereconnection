@@ -1,14 +1,14 @@
 ---
 // Testimonials. Grouped by category, as on her current site, with a filter
 // so each visitor finds the kind of experience they care about.
-// The support line is required on this page.
+// Stella's healing note (HEALING_NOTE) is required on this page.
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import TestimonialNote from '../components/TestimonialNote.astro';
 import TestimonialFilter from '../components/islands/TestimonialFilter';
 import Photo from '../components/Photo.astro';
 import { testimonials, categories } from '../data/testimonials';
-import { SUPPORT_LINE } from '../data/services';
+import { HEALING_NOTE } from '../data/services';
 import { SITE } from '../config';
 import { rel } from '../lib/url';
 
@@ -28,7 +28,7 @@ const schema = [
   <PageHero
     eyebrow="Testimonials"
     title="In their own words."
-    intro="Notes from people who have worked with Stella, shared with their permission. First names or initials only, to keep their privacy."
+    intro="Notes from people who have worked with Stella shared with their permission. First names or initials only to keep their privacy."
   >
     <Fragment slot="aside">
       <TestimonialNote t={heroNote} class="hero-note" />
@@ -37,7 +37,7 @@ const schema = [
 
   <section class="section" aria-label="All testimonials">
     <div class="wrap">
-      <p class="support"><strong>Please note.</strong> {SUPPORT_LINE}</p>
+      <p class="support"><strong>Please note.</strong> {HEALING_NOTE}</p>
 
       <TestimonialFilter client:visible items={testimonials} categories={categories} />
 

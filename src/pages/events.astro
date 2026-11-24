@@ -33,7 +33,7 @@ const schema = upcoming.map((e) => ({
   <PageHero
     eyebrow="Events"
     title="Gatherings, talks and conversations."
-    intro="Stella reads at private and public events, speaks to groups and joins podcasts. Here is where to find her, and how to bring her to yours."
+    intro="Stella reads at private and public events, speaks to groups and joins podcasts. Here is where to find her and how to bring her to yours."
   >
     <Fragment slot="actions">
       <a class="btn" href="#inquiry">Plan an event <span class="arrow" aria-hidden="true">→</span></a>
@@ -41,8 +41,8 @@ const schema = upcoming.map((e) => ({
     <Fragment slot="aside">
       <div class="ticket">
         <span class="t-k">Your gathering</span>
-        <span class="t-t">Readings for your group, party or podcast</span>
-        <span class="t-d">Date of your choosing</span>
+        <span class="t-t">Readings for your group, party or podcast.</span>
+        <span class="t-d">Send your date request.</span>
       </div>
     </Fragment>
   </PageHero>
@@ -65,7 +65,7 @@ const schema = upcoming.map((e) => ({
           ) : (
             <div class="empty" data-reveal>
               <p class="empty-t">Nothing on the calendar right now.</p>
-              <p>Join the list and you’ll hear first.</p>
+              <p>Join the list and you’ll hear first!</p>
               <form class="news" action={FORMS.newsletter} method="post" target="_blank" rel="noopener">
                 <label class="sr-only" for="ev-email">Email address</label>
                 <input id="ev-email" type="email" name="EMAIL" autocomplete="email" placeholder="Your email" required />
@@ -114,6 +114,7 @@ const schema = upcoming.map((e) => ({
               <figcaption>
                 <span class="pod-show">{p.show}</span>
                 <span class="pod-d">{p.detail}</span>
+                {p.note && <span class="pod-note">{p.note}</span>}
               </figcaption>
             </figure>
           ))
@@ -128,9 +129,9 @@ const schema = upcoming.map((e) => ({
         <h2 id="inq-title" data-reveal>Bring Stella to your event</h2>
         <p class="lede" data-reveal>Send the date and a few details. Stella replies personally with what fits your gathering.</p>
         <ul class="kinds" data-reveal>
-          <li><strong>Private parties</strong><span>Short readings for each of your guests</span></li>
-          <li><strong>Groups and meetups</strong><span>A talk, a group reading or both</span></li>
-          <li><strong>Podcasts</strong><span>A guest conversation about faith, healing and intuition</span></li>
+          <li><strong>Private parties</strong><span>Short readings for each of your guests.</span></li>
+          <li><strong>Groups and meetups</strong><span>A talk, a group reading or both.</span></li>
+          <li><strong>Podcasts</strong><span>A guest conversation about faith, healing and intuition.</span></li>
         </ul>
         <div class="ev-photo" data-reveal>
           <Photo
@@ -362,6 +363,11 @@ const schema = upcoming.map((e) => ({
   }
   .pod-d {
     color: var(--color-gray-600);
+  }
+  .pod-note {
+    margin-top: 0.35rem;
+    font-weight: 600;
+    color: var(--color-purple-deep);
   }
 
   .kinds {

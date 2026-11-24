@@ -31,7 +31,7 @@ const schema = [
 ---
 
 <Base title={`${p.data.title}: Divine ReConnection Blog`} description={p.data.description} schema={schema}>
-  <PageHero eyebrow={date} title={p.data.title} />
+  <PageHero eyebrow={p.data.showDate ? date : 'Blog'} title={p.data.title} />
   <section class="section">
     <div class="wrap byline" data-reveal>
       <span class="by-av"><Photo name="stella-avatar" widths={[96, 192]} width={192} height={192} variant="avatar" hue={false} sizes="48px" alt="" /></span>

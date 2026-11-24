@@ -12,7 +12,7 @@ import TestimonialNote from '../../components/TestimonialNote.astro';
 import Photo from '../../components/Photo.astro';
 import { testimonials } from '../../data/testimonials';
 import RequestForm from '../../components/islands/RequestForm';
-import { services, serviceOptions, SUPPORT_LINE, type Service } from '../../data/services';
+import { services, serviceOptions, SUPPORT_LINE, HEALING_NOTE, type Service } from '../../data/services';
 import { SITE, FORMS } from '../../config';
 import { rel } from '../../lib/url';
 
@@ -69,7 +69,7 @@ const schema = [
   },
 ];
 // Pranic Healing only: results in clients' own words, with the support line
-// right beside them so no result reads as a medical promise.
+// right beside them (Stella's HEALING_NOTE) so no result reads as a medical promise.
 const healingNotes = isHealing ? testimonials.filter((t) => t.healing) : [];
 const others = services.filter((o) => o.slug !== s.slug && o.door === s.door);
 ---
@@ -148,7 +148,7 @@ const others = services.filter((o) => o.slug !== s.slug && o.door === s.door);
           <div class="heard-head" data-reveal-group>
             <h2 id="heard-title" data-reveal>After a healing.</h2>
             <p class="support heard-support" data-reveal>
-              <strong>Please note.</strong> {SUPPORT_LINE}
+              <strong>Please note.</strong> {HEALING_NOTE}
             </p>
           </div>
           <div class="heard-notes" data-reveal-group>

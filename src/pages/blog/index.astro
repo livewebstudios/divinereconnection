@@ -25,7 +25,7 @@ const schema = [
   description="Reflections on faith, healing and reconnection from Stella Crispo."
   schema={schema}
 >
-  <PageHero eyebrow="Blog" title="Thoughts." intro="Reflections on faith, healing and reconnection, written by Stella." />
+  <PageHero eyebrow="Blog" title="Thoughts." intro="Reflections on faith, healing and reconnection from Stella to you." />
 
   <section class="section" aria-label="Posts">
     <div class="wrap">
@@ -34,7 +34,7 @@ const schema = [
           posts.map((p) => (
             <li data-reveal>
               <a class="post" href={rel(`blog/${p.id}/`, u)}>
-                <time datetime={p.data.date.toISOString().slice(0, 10)}>{fmt(p.data.date)}</time>
+                {p.data.showDate && <time datetime={p.data.date.toISOString().slice(0, 10)}>{fmt(p.data.date)}</time>}
                 <h2>{p.data.title}</h2>
                 <p>{p.data.description}</p>
                 <span class="go">Read the post <span aria-hidden="true">→</span></span>

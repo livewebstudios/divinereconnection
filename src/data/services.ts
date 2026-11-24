@@ -28,6 +28,13 @@ export type Service = {
 export const SUPPORT_LINE =
   'Sessions are spiritual support. They work alongside the care you get from your doctor or therapist and never replace it.';
 
+// Stella's own disclaimer (2026-11-23). Shown after a bold "Please note." wherever
+// a note sits beside healing results: Testimonials, "After a healing." on
+// Pranic Healing, and under her healing sentence on About. SUPPORT_LINE stays
+// for the FAQ answers and the Spiritual Communication disclaimer.
+export const HEALING_NOTE =
+  'Pranic Healing is not intended to replace orthodox medicine but rather to complement it. Sessions support wellness and do not replace medical or mental health care.';
+
 // Stella's own wording (2026-11-17). Used on Home and About.
 export const FAITH_LINE = 'Stella’s devotion and trust in her own divine connection is at the center of what she does.';
 

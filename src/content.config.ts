@@ -12,6 +12,9 @@ const blog = defineCollection({
     description: z.string(),
     body: z.string(),
     image: z.string().optional(),
+    // false hides the date on the index card and in the post eyebrow
+    // (JSON-LD keeps datePublished). Stella, 11-23: hide "January 1" for now.
+    showDate: z.boolean().default(true),
   }),
 });
 

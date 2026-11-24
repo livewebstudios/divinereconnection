@@ -2,12 +2,12 @@
 // About. One long, readable story with subheads, beside a portrait that
 // stays in view. Her current About page is a wall of text; the fix is
 // shorter paragraphs and subheads, not more sections. The healing results
-// line is Stella's own wording (round 2) and always sits with the support line.
+// line is Stella's own wording (round 2) and always sits with her healing note.
 import Base from '../layouts/Base.astro';
 import PageHero from '../components/PageHero.astro';
 import Petal from '../components/Petal.astro';
 import Photo from '../components/Photo.astro';
-import { FAITH_LINE, SUPPORT_LINE } from '../data/services';
+import { FAITH_LINE, HEALING_NOTE } from '../data/services';
 import { SITE } from '../config';
 import { rel } from '../lib/url';
 
@@ -73,29 +73,29 @@ const schema = [
 
       <article class="prose" data-reveal-group>
         <h2 data-reveal>A psychic family</h2>
-        <p class="big" data-reveal>
-          Stella comes from a psychic family and has had intuitive “hits” since she was a child. For a long time she simply lived with
-          them. Over the years they became something she could not ignore.
+        <p data-reveal>
+          Stella comes from a psychic family and has had intuitive “hits” since she was a child. For a long time, she simply lived with
+          them. Over the years, they became something she could not ignore.
         </p>
 
-        <h2 data-reveal>A nudge toward healing</h2>
+        <h2 data-reveal>A ‘nudge’ toward healing</h2>
         <p data-reveal>
-          In 2017, after what she describes as a spiritual nudge from her father, who had passed on, Stella began studying Pranic Healing.
+          In 2017, after what she describes as a spiritual ‘nudge’ from her father who had passed on, Stella began studying Pranic Healing.
         </p>
         <p data-reveal>
           Today, Stella is a Certified Pranic Healer humbled by many successful healings for conditions ranging from headaches to diabetes,
-          addictions to suicidal tendencies and several “miracle” Covid cases.
+          addictions to suicidal tendencies and with several “miracle” Covid cases.
         </p>
-        <p class="note" data-reveal>{SUPPORT_LINE}</p>
+        <p class="note" data-reveal><strong>Please note.</strong> {HEALING_NOTE}</p>
 
         <h2 data-reveal>From one reading to many</h2>
         <p data-reveal>
-          As her sensitivity to energy grew, so did her intuition. A reading she received changed her life, and she began studying the cards
-          herself. That study opened into a deeper intuitive practice and, in time, mediumship.
+          As her sensitivity to energy grew, so did Stella’s intuition. A reading she received changed her life and propelled her into deeper
+          intuitive connection through tarot and mediumship.
         </p>
         <p data-reveal>
-          Her readings combine intuition, energy, messages from loved ones living and passed, and plain conversation. People tell her they
-          feel at ease, and comforted by how carefully and sincerely she shares what comes through.
+          Stella’s readings combine intuition, energy, messages from loved ones living and passed and plain conversation. People tell her
+          they feel at ease and comforted by how carefully and sincerely she shares what comes through.
         </p>
         <figure class="pull" data-reveal>
           <blockquote><p>“Thank you, Stella, for the guidance. It was bang on. Super grateful, feel much calmer and lighter.”</p></blockquote>
@@ -105,9 +105,9 @@ const schema = [
         <h2 data-reveal>Faith at the center</h2>
         <p class="faith" data-reveal>{FAITH_LINE}</p>
         <p data-reveal>
-          Stella sees the messages she receives as more than answers. They can be steps toward resolving conflict and finding emotional
-          peace. She is grateful to use her gifts and training to help people on their journey, and says that helping others has become
-          part of her own.
+          Stella sees the messages she receives as more than answers. They can help in decision-making and be steps toward resolving
+          conflict and finding emotional peace. She is grateful to use her gifts and training to help people on their journey and says
+          that helping others has become part of her own.
         </p>
 
         <div class="next" data-reveal>
@@ -225,10 +225,6 @@ const schema = [
   }
   .prose p {
     color: var(--color-ink-soft);
-  }
-  .big {
-    font-size: var(--step-1);
-    line-height: 1.55;
   }
   .prose .note {
     font-size: var(--step--1);
