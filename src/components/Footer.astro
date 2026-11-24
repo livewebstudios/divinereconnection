@@ -26,8 +26,8 @@ const year = new Date().getFullYear();
     <div class="top">
       <div class="invite">
         <picture class="lockup">
-          <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-white.svg', u)} width="1212" height="207" />
-          <img src={rel('images/lockup-white.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1184" height="173" loading="lazy" />
+          <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-white.svg', u)} width="1055" height="207" />
+          <img src={rel('images/lockup-white.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1027" height="173" loading="lazy" />
         </picture>
         <p class="headline">When you are ready, Stella is here.</p>
         <div class="ctas">
@@ -84,7 +84,7 @@ const year = new Date().getFullYear();
 
     <div class="base">
       <div class="sign">
-        <a class="wordmark hit" href={rel('', u)}><img src={rel('images/wordmark-white.svg', u)} alt="Divine ReConnection" width="1126" height="75" loading="lazy" /></a>
+        <a class="wordmark hit" href={rel('', u)}><img src={rel('images/wordmark-white.svg', u)} alt="Divine ReConnection" width="969" height="75" loading="lazy" /></a>
         <p>© {year} {SITE.name}. All rights reserved.</p>
       </div>
       <div class="credit">
@@ -150,7 +150,7 @@ const year = new Date().getFullYear();
     margin-bottom: 1.75rem;
   }
   .lockup img {
-    width: clamp(260px, 30vw, 400px);
+    width: clamp(226px, 26vw, 347px); /* 0.867 of round 2: same letter height */
     max-width: 100%;
     height: auto;
   }
@@ -164,13 +164,13 @@ const year = new Date().getFullYear();
     border-radius: 6px;
   }
   .wordmark img {
-    width: 260px;
+    width: 224px;
     max-width: 100%;
     height: auto;
   }
   @media (max-width: 640px) {
     .wordmark img {
-      width: 200px;
+      width: 172px;
     }
   }
   .headline {

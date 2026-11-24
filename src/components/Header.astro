@@ -32,7 +32,7 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
 <header class="site-header" data-header>
   <div class="bar">
     <a class="brand" href={rel('', u)}>
-      <img src={rel('images/logoRGB.png', u)} alt="Divine ReConnection" width="2400" height="127" />
+      <img src={rel('images/logoRGB.png', u)} alt="Divine ReConnection" width="2400" height="142" />
     </a>
 
     <nav class="primary" aria-label="Main">
@@ -143,11 +143,11 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
     box-shadow: 0 12px 32px -18px rgba(46, 26, 85, 0.35);
   }
 
-  /* Star wordmark (about 19:1, wide tracking). It takes whatever room the
-     nav and button leave, up to 480px, so it is as large as the bar allows
+  /* Star wordmark (about 17:1, wide tracking; small caps since round 3). It takes whatever room the
+     nav and button leave, up to 430px, so it is as large as the bar allows
      at every width without the bar getting taller. */
   .brand {
-    flex: 0 1 480px;
+    flex: 0 1 430px;
     min-width: 0;
     display: flex;
     align-items: center;
@@ -156,7 +156,7 @@ const mobileServices = services.map((s) => ({ label: s.nav, href: rel(`services/
   }
   .brand img {
     width: 100%;
-    max-width: 480px;
+    max-width: 430px;
     height: auto;
   }
 

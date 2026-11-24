@@ -33,8 +33,8 @@ const u = Astro.url;
           Phones get the variant with the larger script so "Stella Crispo"
           stays readable; <picture> loads only one of the two. */}
       <picture class="lockup" data-enter-lockup>
-        <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-deep-purple.svg', u)} width="1212" height="207" />
-        <img src={rel('images/lockup-deep-purple.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1184" height="173" fetchpriority="high" />
+        <source media="(max-width: 640px)" srcset={rel('images/lockup-mobile-deep-purple.svg', u)} width="1055" height="207" />
+        <img src={rel('images/lockup-deep-purple.svg', u)} alt="Stella Crispo, Divine ReConnection" width="1027" height="173" fetchpriority="high" />
       </picture>
       <p class="eyebrow hero-eyebrow" data-enter>{SITE.city}, {SITE.region} · In person, by phone or remote</p>
       <h1 id="hero-title" data-enter>Reconnect with the <em>divine</em> in&nbsp;you.</h1>
@@ -186,14 +186,16 @@ const u = Astro.url;
     display: block;
     margin-bottom: clamp(1.5rem, 1rem + 1.5vw, 2.25rem);
   }
+  /* Round 3 small caps made the lockup narrower: widths are 0.867 of
+     round 2's so the letters stay the same height. */
   .lockup img {
-    width: clamp(320px, 42vw, 600px);
+    width: clamp(278px, 36.4vw, 520px);
     max-width: 100%;
     height: auto;
   }
   @media (max-width: 640px) {
     .lockup img {
-      width: min(88vw, 360px);
+      width: min(76.5vw, 313px);
     }
   }
   .hero-eyebrow {
